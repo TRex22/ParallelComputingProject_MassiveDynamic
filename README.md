@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/TRex22/ParallelComputingProject_MassiveDynamic.png?label=ready&title=Ready)](https://waffle.io/TRex22/ParallelComputingProject_MassiveDynamic)
 # ParallelComputingProject_MassiveDynamic
 Our parallel computing COMS3008 Online K-Means Project
 
