@@ -7,5 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "TRex22",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "node-gyp": "^3.4.0"
+  }
 }
