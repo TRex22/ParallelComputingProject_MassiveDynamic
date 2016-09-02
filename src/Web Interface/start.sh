@@ -1,6 +1,7 @@
 #!/bin/bash
 echo 'run web-ui'
 npm install
-node-gyp rebuild
+node-gyp configure
+node-gyp build
 node hello.js
 # npm start
