@@ -2,13 +2,9 @@
   "targets": [
     {
       "target_name": "hello",
-      "sources": [ "hello.cc" ]
-    },
-	    'conditions': [
-			['OS=="linux"', {
-		        'cflags!': [ '-fno-exceptions', '-fno-rtti'],
-		        'cflags': ['-fexceptions', '-fopenmp', '-std=c++11'],
-	        }]
-		]
+      "sources": [ "hello.cc" ],
+      'cflags!': [ '-fno-exceptions', '-fno-rtti'],
+	  'cflags': ['-fexceptions', '-fopenmp', '-std=c++11'],
+    }
   ]
 }
