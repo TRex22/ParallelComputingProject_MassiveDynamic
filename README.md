@@ -2,7 +2,8 @@
 # ParallelComputingProject_MassiveDynamic
 Our parallel computing COMS3008 Online K-Means Project
 
-We are using omp and c++ for the computation and web libraries for the visulisations
+We are using omp and c++ for the computation and web libraries for the visulisations.
+We are using [websocketd](https://github.com/joewalnes/websocketd) to convert stdin/stdout to a websocket for the web interface.
 
 ## Team
 Our Team Name is: Massive Dynamic.
