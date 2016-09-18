@@ -40,5 +40,4 @@ void Print_Data(vector<int> data){
     }
     cout <<  endl;
 }
-
 #endif
