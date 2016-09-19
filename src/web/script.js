@@ -1,5 +1,4 @@
-function loadScript(url, callback)
-{
+function loadScript(url, callback) {
     // Adding the script tag to the head as suggested before
     var head = document.getElementsByTagName('head')[0];
     var script = document.createElement('script');
@@ -14,12 +13,6 @@ function loadScript(url, callback)
     // Fire the loading
     head.appendChild(script);
 }
-
-//bower libraries are here for now
-/*loadScript("../../bower_components/jquery/dist/jquery.min.js");
-loadScript("../../bower_components/bootstrap/dist/js/bootstrap.min.js");
-loadScript("../../bower_components/bootstrap-select/dist/js/bootstrap-select.min.js");*/
-
 
 // helper function: log message to screen
 function log(msg) {
@@ -38,22 +31,23 @@ ws.onmessage = function(event) {
     log('MESSAGE: ' + event.data);
 };
 
-var some_data = {
-        "nodes": [{
-            "id": 1
-        }, {
-            "id": 2
-        }, {
-            "id": 3
-        }],
-        "edges": [{
-            "source": 1,
-            "target": 2
-        }, {
-            "source": 1,
-            "target": 3,
-        }]
-    };
-    alchemy.begin({
-        "dataSource": some_data
-    })
+/*var some_data = {
+    "nodes": [{
+        "id": 1
+    }, {
+        "id": 2
+    }, {
+        "id": 3
+    }],
+    "edges": [{
+        "source": 1,
+        "target": 2
+    }, {
+        "source": 1,
+        "target": 3,
+    }]
+};
+alchemy.begin({
+    "dataSource": some_data
+})
+*/

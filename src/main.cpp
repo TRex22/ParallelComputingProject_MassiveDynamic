@@ -17,8 +17,8 @@ using namespace std;
 
 void Compare_Normal_k_means(vector< vector<double> > data);
 
-int main(){
-	//srand(time(NULL));
+int main(int argc, char* argv[]){
+	srand(time(NULL));
 
 	vector< vector<double> > data = {  {5.1,3.5},
 										{4.9,3.0},
@@ -187,7 +187,7 @@ int main(){
 	Compare_Normal_k_means(Normalize_Data(data));
 
 	//Opens a file and prints the normalized data in a csv format to plug into excel
-	ofstream file;
+/*	ofstream file;
 	file.open("normal_data.csv");
 	for(int i = 0;i < data.size();i++){
 		file << data[i][0];
@@ -197,7 +197,7 @@ int main(){
     	}
     	file <<  endl;
     }
-    file.close();
+    file.close();*/
 
 }
 

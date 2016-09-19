@@ -139,7 +139,7 @@ void parallel_k_Means(vector< vector<double> > data){
 			Print_Data("k: ", k);
 			Print_Data("Centres: ", centres);
 
-	/*int it = 0;
+	int it = 0;
 	while(it < 1){
 
 		int min_centre_index;
@@ -166,10 +166,9 @@ void parallel_k_Means(vector< vector<double> > data){
 
 
 
-			cout << "Cluster-assignment: " << endl;
-			Print_Data(clusters_assignment);
+/*			Print_Data("Cluster-assignment: ", clusters_assignment);
 			cout << endl;
-			cout << endl;
+			cout << endl;*/
 
 
 
@@ -201,14 +200,14 @@ void parallel_k_Means(vector< vector<double> > data){
 
 
 			//cout << "Mean of centre[" << j << "] is ";
-			//Print_Data(mean);
+			//Print_Data("mean: ", mean);
 		}
 		it++;
-	}*/
+	}
 
-
-	/*Print_Data(centres);
-
+	/*Print_Data("centres: ", centres);*/
+	
+	/*
 	//Opens a file and prints the cluster centres in a csv format to plug into excel
 	file.open("centres.csv", ios::app);
 	for(int i = 0;i < centres.size();i++){

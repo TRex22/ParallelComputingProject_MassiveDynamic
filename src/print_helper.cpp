@@ -16,6 +16,8 @@ void Print_Data(const string message, vector< vector<double> > data);
 void Print_Data(const string message, vector<double> data);
 void Print_Data(const string message, vector<int> data);
 void Print_Data(const string message, int data);
+void Print_Data(const string message, double data);
+void Print_Data(const string message);
 
 void Print_Data(const string message, vector< vector<double> > data){
     cout << message << endl;
@@ -47,6 +49,14 @@ void Print_Data(const string message, vector<int> data){
 
 void Print_Data(const string message, int data){
     cout << message << data << endl;
+}
+
+void Print_Data(const string message, double data){
+    cout << message << data << endl;
+}
+
+void Print_Data(const string message){
+    cout << message << endl;
 }
 
 #endif
