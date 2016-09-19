@@ -35,11 +35,9 @@ void k_Means_Online(vector< vector<double> > data){
 		}
 	}
 
-			cout << "Data: " << endl;
-			Print_Data(data);
-			cout << "k: " << k << endl;
-			cout << "Centres: " << endl;
-			Print_Data(centres);
+			Print_Data("Data: ", data);
+			Print_Data("k: ", k);
+			Print_Data("Centres: ", centres);
 
 	int it = 0;
 	while(it < 50){
@@ -69,7 +67,7 @@ void k_Means_Online(vector< vector<double> > data){
 	}
 
 
-	Print_Data(centres);
+	Print_Data("Centres: ", centres);
 
 	//Opens a file and prints the cluster centres in a csv format to plug into excel
 	file.open("centres_online.csv", ios::app);

@@ -36,11 +36,9 @@ void k_Means(vector< vector<double> > data){
 	}
 
 	vector<int> clusters_assignment(data.size());
-			cout << "Data: " << endl;
-			Print_Data(data);
-			cout << "k: " << k << endl;
-			cout << "Centres: " << endl;
-			Print_Data(centres);
+			Print_Data("Data: ", data);
+			Print_Data("k: ", k);
+			Print_Data("Centres: ", centres);
 
 	/*int it = 0;
 	while(it < 1){
@@ -137,11 +135,9 @@ void parallel_k_Means(vector< vector<double> > data){
 	}
 
 	vector<int> clusters_assignment(data.size());
-			cout << "Data: " << endl;
-			Print_Data(data);
-			cout << "k: " << k << endl;
-			cout << "Centres: " << endl;
-			Print_Data(centres);
+			Print_Data("Data: ", data);
+			Print_Data("k: ", k);
+			Print_Data("Centres: ", centres);
 
 	/*int it = 0;
 	while(it < 1){
