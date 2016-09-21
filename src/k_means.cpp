@@ -40,14 +40,17 @@ void k_Means(vector< vector<double> > data){
 			Print_Data("Centres: ", centres);
 
 	int it = 0;
-	while(it < 1){
+	while(it < 1)
+	{
 
-		for (int i = 0; i < data.size(); ++i){   //Finds nearest cluster centre and assigns a value in a vector corresponding to the closest centre
+		for (int i = 0; i < data.size(); ++i)
+		{   //Finds nearest cluster centre and assigns a value in a vector corresponding to the closest centre
 			int min_centre_index = 0;
-			//cout << "Distance from data[" << i << "] to centre[0] is " << Find_Distance(data[i], centres[min_centre_index]) << endl;
-			for(int j = 1; j < centres.size(); ++j){
-				//cout << "Distance from data[" << i << "] to centre[" << j << "] is " << Find_Distance(data[i], centres[j]) << endl;
-				if( Find_Distance(data[i], centres[j]) < Find_Distance(data[i], centres[min_centre_index]) ){
+			
+			for(int j = 1; j < centres.size(); ++j)
+			{
+				if( Find_Distance(data[i], centres[j]) < Find_Distance(data[i], centres[min_centre_index]) )
+				{
 					min_centre_index = j;
 				}
 			}
@@ -55,23 +58,18 @@ void k_Means(vector< vector<double> > data){
 			clusters_assignment[i] = min_centre_index;
 		}
 
-
-
-			cout << "Cluster-assignment: " << endl;
-			Print_Data(clusters_assignment);
-			cout << endl;
-			cout << endl;
-
-
-
+/*		Print_Data("Cluster-assignment: ", clusters_assignment);
+		cout << endl;
+		cout << endl;*/
 
 		for (int j = 0; j < k; j++) //Loops over clusters
 		{
 			int N = 0;
 			vector<double> mean(centres[0].size(), 0);
-			for(int i = 0;i < clusters_assignment.size();i++){ //Loops over the assignment of data to cluster
-				if(clusters_assignment[i] == j){
-					//cout << "data[" << i << "] is in cluster " << j << endl; 
+			for(int i = 0;i < clusters_assignment.size();i++)
+			{ //Loops over the assignment of data to cluster
+				if(clusters_assignment[i] == j)
+				{
 					N++;
 					for (int p = 0; p < mean.size(); p++) //Loops over the data and adds to a 'mean' vector
 					{
@@ -87,8 +85,6 @@ void k_Means(vector< vector<double> > data){
 
 			centres[j] = mean;
 
-
-
 			//cout << "Mean of centre[" << j << "] is ";
 			//Print_Data(mean);
 		}
@@ -96,7 +92,7 @@ void k_Means(vector< vector<double> > data){
 	}
 
 
-	Print_Data(centres);
+	Print_Data("centres: ", centres);
 }
 
 
@@ -126,22 +122,25 @@ void parallel_k_Means(vector< vector<double> > data){
 			Print_Data("Centres: ", centres);
 
 	int it = 0;
-	while(it < 1){
-
+	while(it < 1)
+	{
 		int min_centre_index;
 		//#pragma omp parallel for schedule(dynamic, 5) private(j, min_centre_index) num_threads(4) //collapse(2)
 		#pragma omp parallel
-		for (int i = 0; i < data.size(); ++i){   //Finds nearest cluster centre and assigns a value in a vector corresponding to the closest centre
+		for (int i = 0; i < data.size(); ++i)
+		{   //Finds nearest cluster centre and assigns a value in a vector corresponding to the closest centre
 			min_centre_index = 0;
 
 			//cout << "Distance from data[" << i << "] to centre[0] is " << Find_Distance(data[i], centres[min_centre_index]) << endl;
 
 			#pragma omp for nowait
-			for(int j = 0; j < centres.size(); ++j){
+			for(int j = 0; j < centres.size(); ++j)
+			{
 				
 				//cout << "Distance from data[" << i << "] to centre[" << j << "] is " << Find_Distance(data[i], centres[j]) << endl;
 
-				if( Find_Distance(data[i], centres[j]) < Find_Distance(data[i], centres[min_centre_index]) ){
+				if( Find_Distance(data[i], centres[j]) < Find_Distance(data[i], centres[min_centre_index]) )
+				{
 					min_centre_index = j;
 					clusters_assignment[i] = min_centre_index;
 				}
@@ -150,13 +149,9 @@ void parallel_k_Means(vector< vector<double> > data){
 			clusters_assignment[i] = min_centre_index;
 		}
 
-
-
 /*			Print_Data("Cluster-assignment: ", clusters_assignment);
 			cout << endl;
 			cout << endl;*/
-
-
 
 		#pragma omp parallel
 		for (int j = 0; j < k; j++) //Loops over clusters
@@ -165,7 +160,8 @@ void parallel_k_Means(vector< vector<double> > data){
 			vector<double> mean(centres[0].size(), 0);
 
 			#pragma omp for nowait private(mean)
-			for(int i = 0;i < clusters_assignment.size();i++){ //Loops over the assignment of data to cluster
+			for(int i = 0;i < clusters_assignment.size();i++)
+			{ //Loops over the assignment of data to cluster
 				if(clusters_assignment[i] == j){
 					//cout << "data[" << i << "] is in cluster " << j << endl; 
 					N++;
@@ -183,15 +179,13 @@ void parallel_k_Means(vector< vector<double> > data){
 
 			centres[j] = mean;
 
-
-
 			//cout << "Mean of centre[" << j << "] is ";
 			//Print_Data("mean: ", mean);
 		}
 		it++;
 	}
 
-	/*Print_Data("centres: ", centres);*/
+	Print_Data("centres: ", centres);
 }
 
 #endif
