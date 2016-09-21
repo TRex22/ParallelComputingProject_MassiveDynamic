@@ -18,7 +18,8 @@ using namespace std;
 
 void k_Means_Online(vector< vector<double> > data);
 
-void k_Means_Online(vector< vector<double> > data){
+void k_Means_Online(vector< vector<double> > data)
+{
 	ofstream file;
 	int k;
 	double learnRate = 0.3;

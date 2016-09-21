@@ -13,6 +13,7 @@ START
             "meansqerr": 0.0,
             "time": 0
         }
-    }
+    },
+    "console": ""
 }
 END

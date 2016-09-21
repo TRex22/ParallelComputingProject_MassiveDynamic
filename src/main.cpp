@@ -18,7 +18,8 @@ using namespace std;
 
 void Compare_Normal_k_means(vector< vector<double> > data);
 
-int main(int argc, char* argv[]){
+int main(int argc, char* argv[])
+{
 	srand(time(NULL));
 
 	//TODO: make random data possible
@@ -27,7 +28,8 @@ int main(int argc, char* argv[]){
 	Compare_Normal_k_means(Normalize_Data(data));
 }
 
-void Compare_Normal_k_means(vector< vector<double> > data){
+void Compare_Normal_k_means(vector< vector<double> > data)
+{
 	cout << "*********************SERIAL*********************" << endl;
     double serial_start = omp_get_wtime();
     	k_Means(data);
@@ -41,10 +43,12 @@ void Compare_Normal_k_means(vector< vector<double> > data){
     cout << "Serial time: " << serial_end - serial_start << endl;
     cout << "Parallel time: " << parallel_end - parallel_start << endl;  
 
-    if(serial_end - serial_start <= parallel_end - parallel_start){
+    if(serial_end - serial_start <= parallel_end - parallel_start)
+    {
     	cout << "Serial faster :(" << endl;
     }
-    else{
+    else
+    {
     	cout << "Parallel faster :)" << endl;
     }
 }
