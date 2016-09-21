@@ -69,17 +69,7 @@ void k_Means_Online(vector< vector<double> > data){
 
 	Print_Data("Centres: ", centres);
 
-	//Opens a file and prints the cluster centres in a csv format to plug into excel
-	file.open("centres_online.csv", ios::app);
-	for(int i = 0;i < centres.size();i++){
-		file << centres[i][0];
-    	for (int j = 1; j < centres[0].size(); j++)
-    	{
-    		file << "," << centres[i][j];
-    	}
-    	file <<  endl;
-    }
-    file.close();
+	/*Print_File("centres_online.csv", centres);*/
 }
 
 #endif

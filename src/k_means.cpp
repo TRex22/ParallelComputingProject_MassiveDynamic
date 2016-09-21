@@ -39,7 +39,7 @@ void k_Means(vector< vector<double> > data){
 			Print_Data("k: ", k);
 			Print_Data("Centres: ", centres);
 
-	/*int it = 0;
+	int it = 0;
 	while(it < 1){
 
 		for (int i = 0; i < data.size(); ++i){   //Finds nearest cluster centre and assigns a value in a vector corresponding to the closest centre
@@ -93,23 +93,10 @@ void k_Means(vector< vector<double> > data){
 			//Print_Data(mean);
 		}
 		it++;
-	}*/
+	}
 
 
-	/*Print_Data(centres);
-
-	//Opens a file and prints the cluster centres in a csv format to plug into excel
-	file.open("centres.csv", ios::app);
-	for(int i = 0;i < centres.size();i++){
-		file << centres[i][0];
-    	for (int j = 1; j < centres[0].size(); j++)
-    	{
-    		file << "," << centres[i][j];
-    	}
-    	file <<  endl;
-    }
-    file.close();*/
-
+	Print_Data(centres);
 }
 
 
