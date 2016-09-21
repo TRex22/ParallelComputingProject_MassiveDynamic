@@ -24,24 +24,7 @@ int main(int argc, char* argv[]){
 	//TODO: make random data possible
 	vector< vector<double> > data = getData();
 
-
-	//parallel_k_Means(Normalize_Data(data)); //Calls k-means
-
 	Compare_Normal_k_means(Normalize_Data(data));
-
-	//Opens a file and prints the normalized data in a csv format to plug into excel
-/*	ofstream file;
-	file.open("normal_data.csv");
-	for(int i = 0;i < data.size();i++){
-		file << data[i][0];
-    	for (int j = 1; j < data[0].size(); ++j)
-    	{
-    		file << "," << data[i][j];
-    	}
-    	file <<  endl;
-    }
-    file.close();*/
-
 }
 
 void Compare_Normal_k_means(vector< vector<double> > data){

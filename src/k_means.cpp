@@ -21,7 +21,6 @@ void k_Means(vector< vector<double> > data);
 void parallel_k_Means(vector< vector<double> > data);
 
 void k_Means(vector< vector<double> > data){
-	ofstream file;
 	int k;
 	
 	k = 10;//rand()%10 + 1;
@@ -206,20 +205,6 @@ void parallel_k_Means(vector< vector<double> > data){
 	}
 
 	/*Print_Data("centres: ", centres);*/
-	
-	/*
-	//Opens a file and prints the cluster centres in a csv format to plug into excel
-	file.open("centres.csv", ios::app);
-	for(int i = 0;i < centres.size();i++){
-		file << centres[i][0];
-    	for (int j = 1; j < centres[0].size(); j++)
-    	{
-    		file << "," << centres[i][j];
-    	}
-    	file <<  endl;
-    }
-    file.close();*/
-
 }
 
 #endif
