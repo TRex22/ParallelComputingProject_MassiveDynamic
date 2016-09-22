@@ -1,18 +1,5 @@
-function loadScript(url, callback) {
-    // Adding the script tag to the head as suggested before
-    var head = document.getElementsByTagName('head')[0];
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = url;
-
-    // Then bind the event to the callback function.
-    // There are several events for cross browser compatibility.
-    script.onreadystatechange = callback;
-    script.onload = callback;
-
-    // Fire the loading
-    head.appendChild(script);
-}
+var dataStr = "";
+var data = {};
 
 // helper function: log message to screen
 function log(msg) {
@@ -25,9 +12,13 @@ ws.onopen = function() {
     log('CONNECT');
 };
 ws.onclose = function() {
+    data = JSON.parse(dataStr);
+    /*console.log(JSON.stringify(data));*/
+    drawGraphs(data);
     log('DISCONNECT');
 };
 ws.onmessage = function(event) {
+    dataStr += event.data;
     log('MESSAGE: ' + event.data);
 };
 
@@ -51,3 +42,36 @@ alchemy.begin({
     "dataSource": some_data
 })
 */
+
+function drawGraphs(data) {
+    //time bar graph comparison
+    var ctx = document.getElementById("time-bar-chart");
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Serial", "Parallel"],
+            datasets: [{
+                label: '# of Seconds For K-Means',
+                data: [data.kmeans.serial.time, data.kmeans.parallel.time],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+}
