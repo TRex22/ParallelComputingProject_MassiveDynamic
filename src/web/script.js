@@ -44,6 +44,10 @@ alchemy.begin({
 */
 
 function drawGraphs(data) {
+    drawTimeBarGraph(data);
+}
+
+function drawTimeBarGraph(data) {
     //time bar graph comparison
     var ctx = document.getElementById("time-bar-chart");
     var myChart = new Chart(ctx, {

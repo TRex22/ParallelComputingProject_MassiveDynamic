@@ -93,7 +93,10 @@ vector<string> k_Means(vector< vector<double> > data, const bool webmode){
 		it++;
 	}
 
+	double Mean_Sq_Err = Mean_Squared_Error(data, centres);
+
 	output = Get_Data(output, "centres", centres);
+	output = Get_Data(output, "mean_squared_error", Mean_Sq_Err);
 
 	return output;
 }
@@ -183,7 +186,10 @@ vector<string> parallel_k_Means(vector< vector<double> > data, const bool webmod
 		it++;
 	}
 
+	double Mean_Sq_Err = Mean_Squared_Error(data, centres);
+
 	output = Get_Data(output, "centres", centres);
+	output = Get_Data(output, "mean_squared_error", Mean_Sq_Err);
 
 	return output;
 }
