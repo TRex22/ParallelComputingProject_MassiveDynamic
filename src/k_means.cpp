@@ -14,13 +14,14 @@
 //include modules
 #include "maths_helpers.cpp"
 #include "print_helper.cpp"
+#include "output_helper.cpp"
  
 using namespace std;
 
-void k_Means(vector< vector<double> > data);
-void parallel_k_Means(vector< vector<double> > data);
+void k_Means(vector< vector<double> > data, const bool webmode);
+void parallel_k_Means(vector< vector<double> > data, const bool webmode);
 
-void k_Means(vector< vector<double> > data){
+void k_Means(vector< vector<double> > data, const bool webmode){
 	int k;
 	
 	k = 10;//rand()%10 + 1;
@@ -35,9 +36,13 @@ void k_Means(vector< vector<double> > data){
 	}
 
 	vector<int> clusters_assignment(data.size());
+
+	if (!webmode)
+	{
 			Print_Data("Data: ", data);
 			Print_Data("k: ", k);
 			Print_Data("Centres: ", centres);
+	}
 
 	int it = 0;
 	while(it < 1)
@@ -92,13 +97,16 @@ void k_Means(vector< vector<double> > data){
 	}
 
 
-	Print_Data("centres: ", centres);
+	if(!webmode)
+	{
+		Print_Data("centres: ", centres);
+	}
 }
 
 
 
 
-void parallel_k_Means(vector< vector<double> > data){
+void parallel_k_Means(vector< vector<double> > data, const bool webmode){
 	ofstream file;
 	int k;
 	
@@ -117,9 +125,13 @@ void parallel_k_Means(vector< vector<double> > data){
 	}
 
 	vector<int> clusters_assignment(data.size());
-			Print_Data("Data: ", data);
-			Print_Data("k: ", k);
-			Print_Data("Centres: ", centres);
+	
+	if (!webmode)
+	{
+		Print_Data("Data: ", data);
+		Print_Data("k: ", k);
+		Print_Data("Centres: ", centres);
+	}
 
 	int it = 0;
 	while(it < 1)
@@ -185,7 +197,10 @@ void parallel_k_Means(vector< vector<double> > data){
 		it++;
 	}
 
-	Print_Data("centres: ", centres);
+	if (!webmode)
+	{
+		Print_Data("centres: ", centres);
+	}	
 }
 
 #endif

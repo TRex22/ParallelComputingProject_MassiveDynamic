@@ -16,28 +16,52 @@
 
 using namespace std;
 
-void Compare_Normal_k_means(vector< vector<double> > data);
+void Compare_Normal_k_means(vector<vector<double>> data, const bool webmode);
+void Console_Compare_Out(vector<vector<double>> data, const bool webmode);
 
 int main(int argc, char* argv[])
 {
 	srand(time(NULL));
 
 	//TODO: make random data possible
-	vector< vector<double> > data = getData();
+	vector<vector<double>> data = getData();
 
-	Compare_Normal_k_means(Normalize_Data(data));
+	bool webmode = false;
+	if (argc == 2)
+	{
+		string arg(argv[1]);
+		if (arg == "webmode" || arg == "true" || arg == "on")
+		{
+			webmode = true;
+		}
+	}
+
+	Compare_Normal_k_means(Normalize_Data(data), webmode);
 }
 
-void Compare_Normal_k_means(vector< vector<double> > data)
+void Compare_Normal_k_means(vector<vector<double>> data, const bool webmode)
+{
+	if (webmode)
+	{
+		k_Means(data, webmode);
+		parallel_k_Means(data, webmode);
+	}
+	else if (!webmode)
+	{
+		Console_Compare_Out(data, webmode);
+	}
+}
+
+void Console_Compare_Out(vector<vector<double>> data, const bool webmode)
 {
 	cout << "*********************SERIAL*********************" << endl;
     double serial_start = omp_get_wtime();
-    	k_Means(data);
+    	k_Means(data, webmode);
     double serial_end = omp_get_wtime();
 
     cout << "*********************PARALLEL*********************" << endl;
     double parallel_start = omp_get_wtime();
-    	parallel_k_Means(data);
+    	parallel_k_Means(data, webmode);
     double parallel_end = omp_get_wtime();
 
     cout << "Serial time: " << serial_end - serial_start << endl;

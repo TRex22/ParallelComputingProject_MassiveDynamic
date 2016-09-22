@@ -12,7 +12,7 @@
  
 using namespace std;
 
-void Print_Data(const string message, vector< vector<double> > data);
+void Print_Data(const string message, vector<vector<double>> data);
 void Print_Data(const string message, vector<double> data);
 void Print_Data(const string message, vector<int> data);
 void Print_Data(const string message, int data);
@@ -20,7 +20,7 @@ void Print_Data(const string message, double data);
 void Print_Data(const string message);
 void Print_File(const string file, vector<double> centres);
 
-void Print_Data(const string message, vector< vector<double> > data)
+void Print_Data(const string message, vector<vector<double>> data)
 {
     cout << message << endl;
     for(int i = 0;i < data.size();i++){
@@ -66,7 +66,7 @@ void Print_Data(const string message)
     cout << message << endl;
 }
 
-void Print_File(const string filename, vector< vector<double> > centres)
+void Print_File(const string filename, vector<vector<double>> centres)
 {   
     ofstream file;
     //Opens a file and prints the cluster centres in a csv format to plug into excel

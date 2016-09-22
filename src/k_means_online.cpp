@@ -13,12 +13,13 @@
 //include modules
 #include "maths_helpers.cpp"
 #include "print_helper.cpp"
+#include "output_helper.cpp"
  
 using namespace std;
 
-void k_Means_Online(vector< vector<double> > data);
+void k_Means_Online(vector< vector<double> > data, const bool webmode);
 
-void k_Means_Online(vector< vector<double> > data)
+void k_Means_Online(vector< vector<double> > data, const bool webmode)
 {
 	ofstream file;
 	int k;
@@ -36,9 +37,12 @@ void k_Means_Online(vector< vector<double> > data)
 		}
 	}
 
-	Print_Data("Data: ", data);
-	Print_Data("k: ", k);
-	Print_Data("Centres: ", centres);
+	if(!webmode)
+	{
+		Print_Data("Data: ", data);
+		Print_Data("k: ", k);
+		Print_Data("Centres: ", centres);
+	}
 
 	int it = 0;
 	while(it < 50)
@@ -66,7 +70,11 @@ void k_Means_Online(vector< vector<double> > data)
 		it++;
 	}
 
-	Print_Data("Centres: ", centres);
+	if (!webmode)
+	{
+		Print_Data("Centres: ", centres);
+	}
+	
 	/*Print_File("centres_online.csv", centres);*/
 }
 
