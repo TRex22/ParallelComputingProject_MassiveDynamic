@@ -12,7 +12,6 @@
 
 //include modules
 #include "maths_helpers.cpp"
-#include "print_helper.cpp"
 #include "output_helper.cpp"
  
 using namespace std;
@@ -22,6 +21,7 @@ void k_Means_Online(vector< vector<double> > data, const bool webmode);
 void k_Means_Online(vector< vector<double> > data, const bool webmode)
 {
 	ofstream file;
+	vector<string> output = {"", ""};
 	int k;
 	double learnRate = 0.3;
 	
@@ -37,12 +37,9 @@ void k_Means_Online(vector< vector<double> > data, const bool webmode)
 		}
 	}
 
-	if(!webmode)
-	{
-		Print_Data("Data: ", data);
-		Print_Data("k: ", k);
-		Print_Data("Centres: ", centres);
-	}
+	output = Get_Data(output, "data", data);
+	output = Get_Data(output, "k", k);
+	output = Get_Data(output, "centres_start", centres);
 
 	int it = 0;
 	while(it < 50)
@@ -70,11 +67,8 @@ void k_Means_Online(vector< vector<double> > data, const bool webmode)
 		it++;
 	}
 
-	if (!webmode)
-	{
-		Print_Data("Centres: ", centres);
-	}
-	
+	output = Get_Data(output, "centres", centres);
+
 	/*Print_File("centres_online.csv", centres);*/
 }
 

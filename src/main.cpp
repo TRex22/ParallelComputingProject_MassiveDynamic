@@ -17,7 +17,6 @@
 using namespace std;
 
 void Compare_Normal_k_means(vector<vector<double>> data, const bool webmode);
-void Console_Compare_Out(vector<vector<double>> data, const bool webmode);
 
 int main(int argc, char* argv[])
 {
@@ -41,38 +40,57 @@ int main(int argc, char* argv[])
 
 void Compare_Normal_k_means(vector<vector<double>> data, const bool webmode)
 {
-	if (webmode)
-	{
-		k_Means(data, webmode);
-		parallel_k_Means(data, webmode);
-	}
-	else if (!webmode)
-	{
-		Console_Compare_Out(data, webmode);
-	}
-}
+	//index 0 is raw console out
+	//index 1 is nice stringified json for webui
+	vector<string> output = {"", ""};
+	vector<string> serial_out = {"", "serial: {"};
+	vector<string> parallel_out = {"", "parallel: {"};
 
-void Console_Compare_Out(vector<vector<double>> data, const bool webmode)
-{
-	cout << "*********************SERIAL*********************" << endl;
+	output[0] += "*********************SERIAL*********************\n";
     double serial_start = omp_get_wtime();
-    	k_Means(data, webmode);
+    	serial_out = k_Means(data, webmode);
     double serial_end = omp_get_wtime();
+    output[0] += serial_out[0];
+    
 
-    cout << "*********************PARALLEL*********************" << endl;
+
+	output[0] += "*********************PARALLEL*********************\n";
     double parallel_start = omp_get_wtime();
-    	parallel_k_Means(data, webmode);
+    	parallel_out = parallel_k_Means(data, webmode);
     double parallel_end = omp_get_wtime();
+    output[0] += parallel_out[0];
 
-    cout << "Serial time: " << serial_end - serial_start << endl;
-    cout << "Parallel time: " << parallel_end - parallel_start << endl;  
 
-    if(serial_end - serial_start <= parallel_end - parallel_start)
+
+    double serial_time = serial_end - serial_start;
+    double parallel_time = parallel_end - parallel_start;
+
+    output[0] += "Serial time: " + to_string(serial_time) + "\n";
+    output[0] += "Parallel time: " + to_string(parallel_time) + "\n"; 
+
+    serial_out[1] += "\"time\": " + to_string(serial_time) + "}";
+    parallel_out[1] += "\"time\": " + to_string(parallel_time) + "}";
+
+	output[1] += serial_out[1] + ", ";
+    output[1] += parallel_out[1];
+
+    if(serial_time <= parallel_time)
     {
-    	cout << "Serial faster :(" << endl;
+    	output[0] += "Serial faster :(\n";
     }
     else
     {
-    	cout << "Parallel faster :)" << endl;
+    	output[0] += "Parallel faster :)\n";
+    }
+
+    if (!webmode)
+    {
+    	//print console
+    	cout << output[0] << endl;
+    }
+    else if (webmode)
+    {
+    	//print json
+    	cout << output[1] << endl;
     }
 }

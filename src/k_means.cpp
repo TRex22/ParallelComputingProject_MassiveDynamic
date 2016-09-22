@@ -13,19 +13,19 @@
 
 //include modules
 #include "maths_helpers.cpp"
-#include "print_helper.cpp"
 #include "output_helper.cpp"
  
 using namespace std;
 
-void k_Means(vector< vector<double> > data, const bool webmode);
-void parallel_k_Means(vector< vector<double> > data, const bool webmode);
+vector<string> k_Means(vector< vector<double> > data, const bool webmode);
+vector<string> parallel_k_Means(vector< vector<double> > data, const bool webmode);
 
-void k_Means(vector< vector<double> > data, const bool webmode){
+vector<string> k_Means(vector< vector<double> > data, const bool webmode){
+	vector<string> output = {"", ""};
 	int k;
 	
 	k = 10;//rand()%10 + 1;
-	vector< vector<double> > centres(k, vector<double>(data[0].size(), 0));
+	vector<vector<double>> centres(k, vector<double>(data[0].size(), 0));
 
 	for (int i = 0; i < centres.size(); i++)     //Randomises the cluster centres
 	{
@@ -37,12 +37,9 @@ void k_Means(vector< vector<double> > data, const bool webmode){
 
 	vector<int> clusters_assignment(data.size());
 
-	if (!webmode)
-	{
-			Print_Data("Data: ", data);
-			Print_Data("k: ", k);
-			Print_Data("Centres: ", centres);
-	}
+	output = Get_Data(output, "data", data);
+	output = Get_Data(output, "k", k);
+	output = Get_Data(output, "centres_start", centres);
 
 	int it = 0;
 	while(it < 1)
@@ -96,18 +93,17 @@ void k_Means(vector< vector<double> > data, const bool webmode){
 		it++;
 	}
 
+	output = Get_Data(output, "centres", centres);
 
-	if(!webmode)
-	{
-		Print_Data("centres: ", centres);
-	}
+	return output;
 }
 
 
 
 
-void parallel_k_Means(vector< vector<double> > data, const bool webmode){
+vector<string> parallel_k_Means(vector< vector<double> > data, const bool webmode){
 	ofstream file;
+	vector<string> output = {"", ""};
 	int k;
 	
 	k = 10;//rand()%10 + 1;
@@ -126,12 +122,9 @@ void parallel_k_Means(vector< vector<double> > data, const bool webmode){
 
 	vector<int> clusters_assignment(data.size());
 	
-	if (!webmode)
-	{
-		Print_Data("Data: ", data);
-		Print_Data("k: ", k);
-		Print_Data("Centres: ", centres);
-	}
+	output = Get_Data(output, "data", data);
+	output = Get_Data(output, "k", k);
+	output = Get_Data(output, "centres_start", centres);
 
 	int it = 0;
 	while(it < 1)
@@ -143,15 +136,10 @@ void parallel_k_Means(vector< vector<double> > data, const bool webmode){
 		{   //Finds nearest cluster centre and assigns a value in a vector corresponding to the closest centre
 			min_centre_index = 0;
 
-			//cout << "Distance from data[" << i << "] to centre[0] is " << Find_Distance(data[i], centres[min_centre_index]) << endl;
-
 			#pragma omp for nowait
 			for(int j = 0; j < centres.size(); ++j)
-			{
-				
-				//cout << "Distance from data[" << i << "] to centre[" << j << "] is " << Find_Distance(data[i], centres[j]) << endl;
-
-				if( Find_Distance(data[i], centres[j]) < Find_Distance(data[i], centres[min_centre_index]) )
+			{				
+				if(Find_Distance(data[i], centres[j]) < Find_Distance(data[i], centres[min_centre_index]))
 				{
 					min_centre_index = j;
 					clusters_assignment[i] = min_centre_index;
@@ -175,13 +163,11 @@ void parallel_k_Means(vector< vector<double> > data, const bool webmode){
 			for(int i = 0;i < clusters_assignment.size();i++)
 			{ //Loops over the assignment of data to cluster
 				if(clusters_assignment[i] == j){
-					//cout << "data[" << i << "] is in cluster " << j << endl; 
 					N++;
 					for (int p = 0; p < mean.size(); p++) //Loops over the data and adds to a 'mean' vector
 					{
 						mean[p] += data[i][p];
 					}
-
 				}
 			}
 			for (int i = 0; i < mean.size(); ++i)
@@ -197,10 +183,9 @@ void parallel_k_Means(vector< vector<double> > data, const bool webmode){
 		it++;
 	}
 
-	if (!webmode)
-	{
-		Print_Data("centres: ", centres);
-	}	
+	output = Get_Data(output, "centres", centres);
+
+	return output;
 }
 
 #endif
