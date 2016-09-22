@@ -39,11 +39,11 @@ vector<string> Get_Data(vector<string> output, const string message, vector<vect
     		output[0] += to_string(data[i][j]) + " ";
     		if (j != data[0].size() - 1)
     		{
-    			output[1] += ""+ to_string(data[i][j]) + ",";
+    			output[1] += "\"" + to_string(data[i][j]) + "\",";
     		}
     		else
     		{
-    			output[1] += ""+ to_string(data[i][j]);
+    			output[1] += "\"" + to_string(data[i][j]) + "\"";
     		}    		
     	}
     	output[0] += "\n";
@@ -59,7 +59,7 @@ vector<string> Get_Data(vector<string> output, const string message, vector<vect
 vector<string> Get_Data(vector<string> output, const string message, int data)
 {
 	output[0] += "" + message + ": " + to_string(data) + "\n";
-    output[1] += "\"" + message + "\": " + to_string(data) + ",";
+    output[1] += "\"" + message + "\": \"" + to_string(data) + "\",";
 
     return output;
 }
@@ -67,7 +67,7 @@ vector<string> Get_Data(vector<string> output, const string message, int data)
 vector<string> Get_Data(vector<string> output, const string message, double data)
 {
     output[0] += "" + message + ": " + to_string(data) + "\n";
-    output[1] += "\"" + message + "\": " + to_string(data) + ",\n";
+    output[1] += "\"" + message + "\": \"" + to_string(data) + "\",\n";
 
     return output;
 }
