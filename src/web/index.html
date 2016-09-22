@@ -5,11 +5,17 @@
     <!--     <link rel='stylesheet' href='/style.css' /> -->
     <!--     <link rel="stylesheet" href="./vendor/alchemy/alchemy.min.css" />
     <script type="text/javascript" src="./vendor/alchemy/alchemy.min.js" /> -->
-
     <script type="text/javascript" src="./bower_components/chart.js/dist/Chart.min.js"></script>
-    <script src="./vendor/d3/d3.min.js"></script>     
+    <script src="./vendor/d3/d3.min.js"></script>
 </head>
-
+<div class="row">
+    <div class="col-md-6" width="40" height="40">
+        <canvas id="time-bar-chart" width="40" height="40"></canvas>
+    </div>
+    <div class="col-md-6" width="40" height="40">
+        <canvas id="error-bar-chart" width="40" height="40"></canvas>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-6 pre-scrollable">
         <div class="shell-wrap">
@@ -19,20 +25,8 @@
             </div>
         </div>
     </div>
-    <!--     
-    <div class="col-md-6 time-chart">
-        <h3>Error</h3>
-        <p>Graph goes here</p>
-    </div> 
-    -->
-
-    <div class="col-md-6" width="40" height="40">
-        <canvas id="time-bar-chart" width="40" height="40"></canvas>
-    </div>  
-
-    <script src="./script.js"></script>
-
 </div>
+<script src="./script.js"></script>
 <div>
     <div id="alchemy" class="alchemy"></div>
 </div>

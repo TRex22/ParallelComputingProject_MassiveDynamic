@@ -45,6 +45,7 @@ alchemy.begin({
 
 function drawGraphs(data) {
     drawTimeBarGraph(data);
+    drawErrorBarGraph(data);
 }
 
 function drawTimeBarGraph(data) {
@@ -57,6 +58,39 @@ function drawTimeBarGraph(data) {
             datasets: [{
                 label: '# of Seconds For K-Means',
                 data: [data.kmeans.serial.time, data.kmeans.parallel.time],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+}
+
+function drawErrorBarGraph(data) {
+    //time bar graph comparison
+    var ctx = document.getElementById("error-bar-chart");
+    var myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ["Serial", "Parallel"],
+            datasets: [{
+                label: '# Mean Squared Error For K-Means',
+                data: [data.kmeans.serial.error, data.kmeans.parallel.error],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)'
