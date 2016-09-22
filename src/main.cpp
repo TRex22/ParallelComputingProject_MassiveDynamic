@@ -89,8 +89,6 @@ void Compare_Normal_k_means(vector<vector<double>> data, const bool webmode)
     	output[0] += "Parallel faster :)\n";
     }
 
-    output[1] += "}, \"console\": \"" + output[0] + "\" }";
-
     if (!webmode)
     {
     	//print console
@@ -99,6 +97,8 @@ void Compare_Normal_k_means(vector<vector<double>> data, const bool webmode)
     else if (webmode)
     {
     	//print json
+    	/*output[1] += "}, \"console\": \"" + output[0] + "\" }";*/
+    	output[1] += "} }";
     	cout << output[1] << endl;
     }
 }
