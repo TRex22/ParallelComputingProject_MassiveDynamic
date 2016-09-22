@@ -33,7 +33,7 @@ vector<string> Get_Data(vector<string> output, const string message, vector<vect
     output[1] += "\"" + message + "\": [";
 
     for(int i = 0; i < data.size(); i++){
-    	output[1] += "{";
+    	output[1] += "[";
     	for (int j = 0; j < data[0].size(); ++j)
     	{
     		output[0] += to_string(data[i][j]) + " ";
@@ -47,7 +47,15 @@ vector<string> Get_Data(vector<string> output, const string message, vector<vect
     		}    		
     	}
     	output[0] += "\n";
-    	output[1] += "},\n";
+
+    	if (i != data.size() - 1)
+    	{
+    		output[1] += "],\n";
+    	}
+    	else
+    	{
+    		output[1] += "]\n";
+    	}
     }
 
     output[0] += "\n";
