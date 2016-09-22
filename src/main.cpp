@@ -42,22 +42,28 @@ void Compare_Normal_k_means(vector<vector<double>> data, const bool webmode)
 {
 	//index 0 is raw console out
 	//index 1 is nice stringified json for webui
-	vector<string> output = {"", ""};
-	vector<string> serial_out = {"", "serial: {"};
-	vector<string> parallel_out = {"", "parallel: {"};
+	vector<string> output = {"", "{ \"kmeans\": {"};
+	vector<string> serial_out = {"", "\"serial\": {"};
+	vector<string> parallel_out = {"", "\"parallel\": {"};
 
-	output[0] += "*********************SERIAL*********************\n";
+	output[0] += "*********************SERIAL***********************\n";
     double serial_start = omp_get_wtime();
-    	serial_out = k_Means(data, webmode);
+    	vector<string> k_out = k_Means(data, webmode);
     double serial_end = omp_get_wtime();
+    serial_out[0] += k_out[0];
+    serial_out[1] += k_out[1];
+
     output[0] += serial_out[0];
     
 
 
 	output[0] += "*********************PARALLEL*********************\n";
     double parallel_start = omp_get_wtime();
-    	parallel_out = parallel_k_Means(data, webmode);
+    	vector<string> kp_out = parallel_k_Means(data, webmode);
     double parallel_end = omp_get_wtime();
+	parallel_out[0] += kp_out[0];
+	parallel_out[1] += kp_out[1]; 
+
     output[0] += parallel_out[0];
 
 
@@ -82,6 +88,8 @@ void Compare_Normal_k_means(vector<vector<double>> data, const bool webmode)
     {
     	output[0] += "Parallel faster :)\n";
     }
+
+    output[1] += "}, \"console\": \"" + output[0] + "\" }";
 
     if (!webmode)
     {
