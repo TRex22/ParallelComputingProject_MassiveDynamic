@@ -149,7 +149,7 @@ vector<string> parallel_k_Means(vector< vector<double> > data, const bool webmod
 			clusters_assignment[i] = min_centre_index;
 		}
 
-		Print_Data("clusters assignment", clusters_assignment);
+		//Print_Data("clusters assignment", clusters_assignment);
 
 		#pragma omp parallel for
 		for (int j = 0; j < k; j++) //Loops over clusters
