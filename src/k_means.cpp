@@ -14,6 +14,7 @@
 //include modules
 #include "maths_helpers.cpp"
 #include "output_helper.cpp"
+#include "print_helper.cpp"
  
 using namespace std;
 
@@ -42,11 +43,11 @@ vector<string> k_Means(vector< vector<double> > data, const bool webmode){
 	output = Get_Data(output, "centres_start", centres);
 
 	int it = 0;
-	while(it < 1)
+	while(it < 200)
 	{
 
-		for (int i = 0; i < data.size(); ++i)
-		{   //Finds nearest cluster centre and assigns a value in a vector corresponding to the closest centre
+		for (int i = 0; i < data.size(); ++i)   //Finds nearest cluster centre and assigns a value in a vector corresponding to the closest centre
+		{   
 			int min_centre_index = 0;
 			
 			for(int j = 1; j < centres.size(); ++j)
@@ -60,35 +61,31 @@ vector<string> k_Means(vector< vector<double> > data, const bool webmode){
 			clusters_assignment[i] = min_centre_index;
 		}
 
-/*		Print_Data("Cluster-assignment: ", clusters_assignment);
-		cout << endl;
-		cout << endl;*/
-
 		for (int j = 0; j < k; j++) //Loops over clusters
 		{
-			int N = 0;
+			int N = 0;   //counter for how many points in a cluster
 			vector<double> mean(centres[0].size(), 0);
-			for(int i = 0;i < clusters_assignment.size();i++)
-			{ //Loops over the assignment of data to cluster
+			for(int i = 0;i < clusters_assignment.size();i++)  //Loops over the assignment of data to cluster
+			{ 
 				if(clusters_assignment[i] == j)
 				{
 					N++;
-					for (int p = 0; p < mean.size(); p++) //Loops over the data and adds to a 'mean' vector
+					for (int p = 0; p < mean.size(); p++)  //Loops over the data and adds to a 'mean' vector
 					{
 						mean[p] += data[i][p];
 					}
 
 				}
 			}
+
 			for (int i = 0; i < mean.size(); ++i)
 			{
-				mean[i] /= N;
+				if(mean[i] != 0){
+					mean[i] /= N;
+				}
 			}
 
 			centres[j] = mean;
-
-			//cout << "Mean of centre[" << j << "] is ";
-			//Print_Data(mean);
 		}
 		it++;
 	}
@@ -130,13 +127,13 @@ vector<string> parallel_k_Means(vector< vector<double> > data, const bool webmod
 	output = Get_Data(output, "centres_start", centres);
 
 	int it = 0;
-	while(it < 1)
+	while(it < 200)
 	{
 		int min_centre_index;
 		//#pragma omp parallel for schedule(dynamic, 5) private(j, min_centre_index) num_threads(4) //collapse(2)
 		#pragma omp parallel
-		for (int i = 0; i < data.size(); ++i)
-		{   //Finds nearest cluster centre and assigns a value in a vector corresponding to the closest centre
+		for (int i = 0; i < data.size(); ++i)   //Finds nearest cluster centre and assigns a value in a vector corresponding to the closest centre
+		{   
 			min_centre_index = 0;
 
 			#pragma omp for nowait
@@ -152,17 +149,14 @@ vector<string> parallel_k_Means(vector< vector<double> > data, const bool webmod
 			clusters_assignment[i] = min_centre_index;
 		}
 
-/*			Print_Data("Cluster-assignment: ", clusters_assignment);
-			cout << endl;
-			cout << endl;*/
+		Print_Data("clusters assignment", clusters_assignment);
 
-		#pragma omp parallel
+		#pragma omp parallel for
 		for (int j = 0; j < k; j++) //Loops over clusters
 		{
 			int N = 0;
 			vector<double> mean(centres[0].size(), 0);
 
-			#pragma omp for nowait private(mean)
 			for(int i = 0;i < clusters_assignment.size();i++)
 			{ //Loops over the assignment of data to cluster
 				if(clusters_assignment[i] == j){
@@ -175,13 +169,12 @@ vector<string> parallel_k_Means(vector< vector<double> > data, const bool webmod
 			}
 			for (int i = 0; i < mean.size(); ++i)
 			{
-				mean[i] /= N;
+				if(mean[i] != 0){
+					mean[i] /= N;
+				}
 			}
 
 			centres[j] = mean;
-
-			//cout << "Mean of centre[" << j << "] is ";
-			//Print_Data("mean: ", mean);
 		}
 		it++;
 	}
@@ -190,6 +183,9 @@ vector<string> parallel_k_Means(vector< vector<double> > data, const bool webmod
 
 	output = Get_Data(output, "centres", centres);
 	output = Get_Data(output, "error", Mean_Sq_Err);
+
+	/*Print_File("data-par.csv", data);
+	Print_File("centres-par.csv", centres);*/
 
 	return output;
 }
