@@ -90,6 +90,9 @@ vector<string> k_Means(vector< vector<double> > data, const bool webmode){
 		it++;
 	}
 
+	/*Print_Data("clusters assignment", clusters_assignment);*/
+	output = Get_Data(output, "clusters assignment", clusters_assignment);
+
 	double Mean_Sq_Err = Mean_Squared_Error(data, centres);
 
 	output = Get_Data(output, "centres", centres);
@@ -149,7 +152,7 @@ vector<string> parallel_k_Means(vector< vector<double> > data, const bool webmod
 			clusters_assignment[i] = min_centre_index;
 		}
 
-		Print_Data("clusters assignment", clusters_assignment);
+		/*Print_Data("clusters assignment", clusters_assignment);*/
 
 		#pragma omp parallel for
 		for (int j = 0; j < k; j++) //Loops over clusters
@@ -178,6 +181,8 @@ vector<string> parallel_k_Means(vector< vector<double> > data, const bool webmod
 		}
 		it++;
 	}
+
+	output = Get_Data(output, "clusters assignment", clusters_assignment);
 
 	double Mean_Sq_Err = Mean_Squared_Error(data, centres);
 
