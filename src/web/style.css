@@ -84,3 +84,10 @@ body {
     overflow: scroll;
     height: 200px;
 }
+
+.scatter-chart {
+    height: 400px; 
+    min-width: 210px; 
+    max-width: 400px;
+    margin: 0 auto;
+}

@@ -3,18 +3,24 @@
 <head>
     <link rel='stylesheet' href="./bower_components/bootswatch/cyborg/bootstrap.min.css" />
     <!--     <link rel='stylesheet' href='/style.css' /> -->
-    <!--     <link rel="stylesheet" href="./vendor/alchemy/alchemy.min.css" />
-    <script type="text/javascript" src="./vendor/alchemy/alchemy.min.js" /> -->
+    <script type="text/javascript" src="./bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="./bower_components/chart.js/dist/Chart.min.js"></script>
     <script src="./vendor/d3/d3.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
 </head>
 <div class="row">
     <div class="col-md-6" width="40" height="40">
-        <canvas id="time-bar-chart" width="40" height="40"></canvas>
+        <canvas id="time-chart" width="40" height="40"></canvas>
     </div>
     <div class="col-md-6" width="40" height="40">
-        <canvas id="error-bar-chart" width="40" height="40"></canvas>
+        <canvas id="error-chart" width="40" height="40"></canvas>
     </div>
+</div>
+<div class="row">
+    <div class="col-md-6 scatter-chart" id="scatter-chart-serial-data" style="height: 400px"></div>
+    <div class="col-md-6 scatter-chart" id="scatter-chart-parallel-data" style="height: 400px"></div>
 </div>
 <div class="row">
     <div class="col-md-6 pre-scrollable">
@@ -27,8 +33,3 @@
     </div>
 </div>
 <script src="./script.js"></script>
-<div>
-    <div id="alchemy" class="alchemy"></div>
-</div>
-<script>
-</script>
