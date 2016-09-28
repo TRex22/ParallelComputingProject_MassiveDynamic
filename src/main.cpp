@@ -59,7 +59,7 @@ void Compare_Normal_k_means(vector<vector<double>> data, const bool webmode)
 
 	output[0] += "*********************PARALLEL*********************\n";
     double parallel_start = omp_get_wtime();
-    	vector<string> kp_out = parallel_k_Means(data, webmode);
+    	vector<string> kp_out = parallel_k_Means( , webmode);
     double parallel_end = omp_get_wtime();
 	parallel_out[0] += kp_out[0];
 	parallel_out[1] += kp_out[1]; 
@@ -97,7 +97,6 @@ void Compare_Normal_k_means(vector<vector<double>> data, const bool webmode)
     else if (webmode)
     {
     	//print json
-    	/*output[1] += "}, \"console\": \"" + output[0] + "\" }";*/
     	output[1] += "} }";
     	cout << output[1] << endl;
     }

@@ -43,7 +43,7 @@ function getPlotDimension3D(data) {
 function convertToNumbers(data) {
     data.kmeans.serial.data = convertStrArrayToFloat(data.kmeans.serial.data);
     data.kmeans.parallel.data = convertStrArrayToFloat(data.kmeans.parallel.data);
-console.log(JSON.stringify(data.kmeans.parallel.data));
+
     data.kmeans.serial.minX = findDataMinX(data.kmeans.serial.data) - 2;
     data.kmeans.serial.minY = findDataMinY(data.kmeans.serial.data) - 2;
     data.kmeans.serial.minZ = findDataMinZ(data.kmeans.serial.data) - 2;
@@ -228,7 +228,6 @@ function drawErrorBarGraph(data) {
 
 function drawSerialScatterPlot(data) {
     $(function() {
-
         // Give the points a 3D feel by adding a radial gradient
         Highcharts.getOptions().colors = $.map(Highcharts.getOptions().colors, function(color) {
             return {
@@ -268,7 +267,7 @@ function drawSerialScatterPlot(data) {
                 text: 'Serial Initial Data Points'
             },
             subtitle: {
-                text: 'Not Yet Clustered'
+                text: 'Not Yet Clustered But Normalized'
             },
             plotOptions: {
                 scatter: {
@@ -296,7 +295,7 @@ function drawSerialScatterPlot(data) {
                 enabled: false
             },
             series: [{
-                name: 'Serial Initial Data',
+                name: 'Serial Initial Data But Normalized',
                 colorByPoint: true,
                 data: data.kmeans.serial.data
             }]
@@ -337,7 +336,7 @@ function drawSerialScatterPlot(data) {
 
 function drawParallelScatterPlot(data) {
     $(function() {
-        // Give the points a 3D feel by adding a radial gradient
+/*        // Give the points a 3D feel by adding a radial gradient
         Highcharts.getOptions().colors = $.map(Highcharts.getOptions().colors, function(color) {
             return {
                 radialGradient: {
@@ -351,7 +350,7 @@ function drawParallelScatterPlot(data) {
                 ]
             };
         });
-
+*/
         // Set up the chart
         var chart = new Highcharts.Chart({
             chart: {
@@ -376,7 +375,7 @@ function drawParallelScatterPlot(data) {
                 text: 'Parallel Initial Data Points'
             },
             subtitle: {
-                text: 'Not Yet Clustered'
+                text: 'Not Yet Clustered But Normalized'
             },
             plotOptions: {
                 scatter: {
@@ -404,7 +403,7 @@ function drawParallelScatterPlot(data) {
                 enabled: false
             },
             series: [{
-                name: 'Serial Initial Data',
+                name: 'Parallel Initial Data But Normalized',
                 colorByPoint: true,
                 data: data.kmeans.parallel.data
             }]

@@ -104,13 +104,13 @@ vector<string> k_Means(vector< vector<double> > data, const bool webmode){
 
 
 
-vector<string> parallel_k_Means(vector< vector<double> > data, const bool webmode){
+vector<string> parallel_k_Means(vector<vector<double>> data, const bool webmode){
 	ofstream file;
 	vector<string> output = {"", ""};
 	int k;
 	
 	k = 10;//rand()%10 + 1;
-	vector< vector<double> > centres(k, vector<double>(data[0].size(), 0));
+	vector<vector<double>> centres(k, vector<double>(data[0].size(), 0));
 
 	int i;
 	int j;
