@@ -16,6 +16,8 @@
   ],
   "dependencies": {
     "bootswatch": "^3.3.7",
-    "bootstrap": "^3.3.7"
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1",
+    "chart.js": "^2.3.0"
   }
 }

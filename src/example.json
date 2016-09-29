@@ -1,0 +1,19 @@
+START
+{
+    "kmeans": {
+        "serial": {
+            "k": 0,
+            "centres": [],
+            "meansqerr": 0.0,
+            "time": 0
+        },
+        "parallel": {
+            "k": 0,
+            "centres": [],
+            "meansqerr": 0.0,
+            "time": 0
+        }
+    },
+    "console": "fff"
+}
+END
