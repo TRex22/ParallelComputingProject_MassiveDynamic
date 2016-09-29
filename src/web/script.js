@@ -47,6 +47,8 @@ function convertToNumbers(data) {
     data.kmeans.parallel.data = convertStrArrayToFloat(data.kmeans.parallel.data);
     data.kmeans.serial.centres = convertStrArrayToFloat(data.kmeans.serial.centres);
     data.kmeans.serial.clusters_assignment = convertStrArrayToFloat(data.kmeans.serial.clusters_assignment);
+    data.kmeans.parallel.centres = convertStrArrayToFloat(data.kmeans.parallel.centres);
+    data.kmeans.parallel.clusters_assignment = convertStrArrayToFloat(data.kmeans.parallel.clusters_assignment);
 
     data.kmeans.serial.minX = findDataMinX(data.kmeans.serial.data) - 2;
     data.kmeans.serial.minY = findDataMinY(data.kmeans.serial.data) - 2;
@@ -242,21 +244,6 @@ function drawScatterPlot(data) {
     var is3D = getPlotDimension3D(data);
 
     $(function() {
-        // Give the points a 3D feel by adding a radial gradient
-        Highcharts.getOptions().colors = $.map(Highcharts.getOptions().colors, function(color) {
-            return {
-                radialGradient: {
-                    cx: 0.4,
-                    cy: 0.3,
-                    r: 0.5
-                },
-                stops: [
-                    [0, color],
-                    [1, Highcharts.Color(color).brighten(-0.2).get('rgb')]
-                ]
-            };
-        });
-
         // Set up the chart
         var chart = new Highcharts.Chart({
             chart: {
