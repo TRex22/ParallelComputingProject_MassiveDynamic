@@ -29,15 +29,16 @@ function drawGraphs(data) {
 
     drawTimeBarGraph(data);
     drawErrorBarGraph(data);
-    drawSerialScatterPlot(data);
-    drawParallelScatterPlot(data);
+    drawScatterPlot(data);
 }
 
 function getPlotDimension3D(data) {
-    if (data.kmeans.serial.data[0].length == 2) {
+    if (data.kmeans.serial.data[0].length === 2) {
         return false;
+    } else if (data.kmeans.serial.data[0].length === 3) {
+        return true;
     }
-    return true;
+    return false;
 }
 
 function convertToNumbers(data) {
@@ -151,9 +152,17 @@ function findDataMaxZ(dataArr) {
 
 function convertStrArrayToFloat(arr) {
     var floatArr = [];
-    for (var i = 0; i < arr.length; i++) {
-        var dataPoint = [parseFloat(arr[i][0]), parseFloat(arr[i][1])];
-        floatArr.push(dataPoint);
+
+    if (arr[0].length === 2) {
+        for (var i = 0; i < arr.length; i++) {
+            var dataPoint = [parseFloat(arr[i][0]), parseFloat(arr[i][1])];
+            floatArr.push(dataPoint);
+        }
+    } else if (arr[0].length === 3) {
+        for (var i = 0; i < arr.length; i++) {
+            var dataPoint = [parseFloat(arr[i][0]), parseFloat(arr[i][1]), parseFloat(arr[i][2])];
+            floatArr.push(dataPoint);
+        }
     }
 
     return floatArr;
@@ -226,7 +235,9 @@ function drawErrorBarGraph(data) {
     });
 }
 
-function drawSerialScatterPlot(data) {
+function drawScatterPlot(data) {
+    var is3D = getPlotDimension3D(data);
+
     $(function() {
         // Give the points a 3D feel by adding a radial gradient
         Highcharts.getOptions().colors = $.map(Highcharts.getOptions().colors, function(color) {
@@ -246,11 +257,11 @@ function drawSerialScatterPlot(data) {
         // Set up the chart
         var chart = new Highcharts.Chart({
             chart: {
-                renderTo: 'scatter-chart-serial-data',
+                renderTo: 'scatter-chart-data',
                 margin: 100,
                 type: 'scatter',
                 options3d: {
-                    enabled: getPlotDimension3D(data),
+                    enabled: is3D,
                     alpha: 10,
                     beta: 30,
                     depth: 250,
@@ -264,7 +275,7 @@ function drawSerialScatterPlot(data) {
                 }
             },
             title: {
-                text: 'Serial Initial Data Points'
+                text: 'Initial Data Points'
             },
             subtitle: {
                 text: 'Not Yet Clustered But Normalized'
@@ -295,117 +306,9 @@ function drawSerialScatterPlot(data) {
                 enabled: false
             },
             series: [{
-                name: 'Serial Initial Data But Normalized',
+                name: 'Initial Data But Normalized',
                 colorByPoint: true,
                 data: data.kmeans.serial.data
-            }]
-        });
-
-        // Add mouse events for rotation
-        $(chart.container).bind('mousedown.hc touchstart.hc', function(eStart) {
-            eStart = chart.pointer.normalize(eStart);
-
-            var posX = eStart.pageX,
-                posY = eStart.pageY,
-                alpha = chart.options.chart.options3d.alpha,
-                beta = chart.options.chart.options3d.beta,
-                newAlpha,
-                newBeta,
-                sensitivity = 5; // lower is more sensitive
-
-            $(document).bind({
-                'mousemove.hc touchdrag.hc': function(e) {
-                    // Run beta
-                    newBeta = beta + (posX - e.pageX) / sensitivity;
-                    chart.options.chart.options3d.beta = newBeta;
-
-                    // Run alpha
-                    newAlpha = alpha + (e.pageY - posY) / sensitivity;
-                    chart.options.chart.options3d.alpha = newAlpha;
-
-                    chart.redraw(false);
-                },
-                'mouseup touchend': function() {
-                    $(document).unbind('.hc');
-                }
-            });
-        });
-
-    });
-}
-
-function drawParallelScatterPlot(data) {
-    $(function() {
-/*        // Give the points a 3D feel by adding a radial gradient
-        Highcharts.getOptions().colors = $.map(Highcharts.getOptions().colors, function(color) {
-            return {
-                radialGradient: {
-                    cx: 0.4,
-                    cy: 0.3,
-                    r: 0.5
-                },
-                stops: [
-                    [0, color],
-                    [1, Highcharts.Color(color).brighten(-0.2).get('rgb')]
-                ]
-            };
-        });
-*/
-        // Set up the chart
-        var chart = new Highcharts.Chart({
-            chart: {
-                renderTo: 'scatter-chart-parallel-data',
-                margin: 100,
-                type: 'scatter',
-                options3d: {
-                    enabled: getPlotDimension3D(data),
-                    alpha: 10,
-                    beta: 30,
-                    depth: 250,
-                    viewDistance: 5,
-                    fitToPlot: false,
-                    frame: {
-                        bottom: { size: 1, color: 'rgba(0,0,0,0.02)' },
-                        back: { size: 1, color: 'rgba(0,0,0,0.04)' },
-                        side: { size: 1, color: 'rgba(0,0,0,0.06)' }
-                    }
-                }
-            },
-            title: {
-                text: 'Parallel Initial Data Points'
-            },
-            subtitle: {
-                text: 'Not Yet Clustered But Normalized'
-            },
-            plotOptions: {
-                scatter: {
-                    width: 10,
-                    height: 10,
-                    depth: 10
-                }
-            },
-            yAxis: {
-                min: data.kmeans.parallel.minY,
-                max: data.kmeans.parallel.maxY,
-                title: null
-            },
-            xAxis: {
-                min: data.kmeans.parallel.minX,
-                max: data.kmeans.parallel.maxX,
-                gridLineWidth: 1
-            },
-            zAxis: {
-                min: data.kmeans.parallel.minZ,
-                max: data.kmeans.parallel.maxZ,
-                showFirstLabel: false
-            },
-            legend: {
-                enabled: false
-            },
-            series: [{
-                name: 'Parallel Initial Data But Normalized',
-                colorByPoint: true,
-                data: data.kmeans.parallel.data
             }]
         });
 

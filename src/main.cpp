@@ -21,19 +21,35 @@ void Compare_Normal_k_means(vector<vector<double>> data, const bool webmode);
 int main(int argc, char* argv[])
 {
 	srand(time(NULL));
-
-	//TODO: make random data possible
-	vector<vector<double>> data = getData();
+    vector<vector<double>> data;
 
 	bool webmode = false;
 	if (argc == 2)
 	{
+        //TODO: make random data possible
+        data = getData();
+
 		string arg(argv[1]);
 		if (arg == "webmode" || arg == "true" || arg == "on")
 		{
 			webmode = true;
 		}
 	}
+    else if (argc == 6)
+    {
+        string web(argv[1]);
+        if (web == "webmode" || web == "true" || web == "on")
+        {
+            webmode = true;
+        }
+
+        int DataSize(atoi(argv[2]));
+        int Dimensions(atoi(argv[3]));
+        int Max(atoi(argv[4]));
+        int Min(atoi(argv[5]));
+
+        data = generate2DData(DataSize, Dimensions, Max, Min);
+    }
 
 	Compare_Normal_k_means(Normalize_Data(data), webmode);
 }
@@ -59,7 +75,7 @@ void Compare_Normal_k_means(vector<vector<double>> data, const bool webmode)
 
 	output[0] += "*********************PARALLEL*********************\n";
     double parallel_start = omp_get_wtime();
-    	vector<string> kp_out = parallel_k_Means( , webmode);
+    	vector<string> kp_out = parallel_k_Means(data, webmode);
     double parallel_end = omp_get_wtime();
 	parallel_out[0] += kp_out[0];
 	parallel_out[1] += kp_out[1]; 
