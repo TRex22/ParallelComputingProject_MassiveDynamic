@@ -91,7 +91,7 @@ vector<string> k_Means(vector< vector<double> > data, const bool webmode){
 	}
 
 	/*Print_Data("clusters assignment", clusters_assignment);*/
-	output = Get_Data(output, "clusters assignment", clusters_assignment);
+	output = Get_Data(output, "clusters_assignment", clusters_assignment);
 
 	double Mean_Sq_Err = Mean_Squared_Error(data, centres);
 
@@ -182,7 +182,7 @@ vector<string> parallel_k_Means(vector<vector<double>> data, const bool webmode)
 		it++;
 	}
 
-	output = Get_Data(output, "clusters assignment", clusters_assignment);
+	output = Get_Data(output, "clusters_assignment", clusters_assignment);
 
 	double Mean_Sq_Err = Mean_Squared_Error(data, centres);
 
