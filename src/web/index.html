@@ -2,13 +2,20 @@
 
 <head>
     <link rel='stylesheet' href="./bower_components/bootswatch/cyborg/bootstrap.min.css" />
+    <link rel='stylesheet' href="./bower_components/alchemyjs/dist/alchemy.css" />
+    <link rel='stylesheet' href="./bower_components/components-font-awesome/css/font-awesome.min.css" />
+    <link rel='stylesheet' href="./bower_components/vis/dist/vis.min.css" />
+    <!-- <link rel='stylesheet' href="./vendor/alchemy/vendor.css" /> -->
     <!--     <link rel='stylesheet' href='/style.css' /> -->
     <script type="text/javascript" src="./bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="./bower_components/chart.js/dist/Chart.min.js"></script>
-    <script src="./vendor/d3/d3.min.js"></script>
-    <script src="./vendor/highcharts/highcharts.js"></script>
-    <script src="./vendor/highcharts/highcharts-3d.js"></script>
-    <script src="./vendor/highcharts/exporting.js"></script>
+    <script type="text/javascript" src="./bower_components/d3/d3.js"></script>
+    <script type="text/javascript" src="./vendor/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="./vendor/highcharts/highcharts-3d.js"></script>
+    <script type="text/javascript" src="./vendor/highcharts/exporting.js"></script>
+<!--     <script type="text/javascript" src="./bower_components/alchemyjs/dist/alchemy.js"></script>
+    <script type="text/javascript" src="./bower_components/alchemyjs/dist/scripts/vendor.js"></script> -->
+    <script type="text/javascript" src="./bower_components/vis/dist/vis.min.js"></script>
 </head>
 <div class="row">
     <div class="col-md-6" width="40" height="40">
@@ -25,6 +32,7 @@
     <div class="scatter-chart" id="cluster-scatter-chart-data" style="height: 400px"></div>
 </div>
 <div class="row">
+    <div class="col-md-6 alchemy scatter-chart" id="alchemy" style="height: 400px"></div>
     <div class="col-md-6 pre-scrollable">
         <div class="shell-wrap">
             <p class="shell-top-bar">K-Means:// Terminal</p>

@@ -31,6 +31,7 @@ function drawGraphs(data) {
     drawErrorBarGraph(data);
     drawScatterPlot(data);
     drawClusterScatterPlot(data);
+    /*drawClusterDiagram(data);*/
 }
 
 function getPlotDimension3D(data) {
@@ -46,9 +47,9 @@ function convertToNumbers(data) {
     data.kmeans.serial.data = convertStrArrayToFloat(data.kmeans.serial.data);
     data.kmeans.parallel.data = convertStrArrayToFloat(data.kmeans.parallel.data);
     data.kmeans.serial.centres = convertStrArrayToFloat(data.kmeans.serial.centres);
-    data.kmeans.serial.clusters_assignment = convertStrArrayToFloat(data.kmeans.serial.clusters_assignment);
+    /*data.kmeans.serial.clusters_assignment = convertStrArrayToFloat(data.kmeans.serial.clusters_assignment);*/
     data.kmeans.parallel.centres = convertStrArrayToFloat(data.kmeans.parallel.centres);
-    data.kmeans.parallel.clusters_assignment = convertStrArrayToFloat(data.kmeans.parallel.clusters_assignment);
+    /*data.kmeans.parallel.clusters_assignment = convertStrArrayToFloat(data.kmeans.parallel.clusters_assignment);*/
 
     data.kmeans.serial.minX = findDataMinX(data.kmeans.serial.data) - 2;
     data.kmeans.serial.minY = findDataMinY(data.kmeans.serial.data) - 2;
@@ -331,7 +332,6 @@ function drawScatterPlot(data) {
                 }
             });
         });
-
     });
 }
 
@@ -441,7 +441,6 @@ function drawClusterScatterPlot(data) {
                 }
             });
         });
-
     });
 }
 
@@ -660,4 +659,118 @@ function highChartTheme() {
 
     // Apply the theme
     Highcharts.setOptions(Highcharts.theme);
+}
+
+function drawClusterDiagram(data) {
+    var clusters = getClusterDataForDiagram(data);
+    var colours = getClusterColours(data, clusters);
+
+    var config = {
+        dataSource: clusters,
+        nodeCaption: 'Node',
+        nodeMouseOver: 'Node',
+        cluster: true,
+        clusterColours: colours,
+        nodeTypes: { "node_type": ["cluster", "node"] }
+    };
+
+    alchemy = new Alchemy(config);
+}
+
+function getClusterDataForDiagram(data) {
+    var dsrc = {
+        "comment": "Cluster Nodes and Associated Data",
+        "nodes": [],
+        "edges": []
+    };
+
+    //k = no nodes
+    for (var i = 0; i < data.kmeans.serial.k; i++) {
+        var node = { "type": "cluster", "id": parseInt(i + 1), "caption": "" + data.kmeans.serial.centres[i], "name": "" + data.kmeans.serial.centres[i], "cluster": (i + 1) };
+        dsrc.nodes.push(node);
+    }
+    //data points
+    for (var i = 0; i < data.kmeans.serial.data.length; i++) {
+        var trueCount = i + data.kmeans.serial.k + 1;
+        var node = { "type": "node", "id": parseInt(trueCount), "caption": "" + data.kmeans.serial.centres[i], "name": "" + data.kmeans.serial.data[i], "cluster": parseInt(trueCount) };
+        dsrc.nodes.push(node);
+    }
+    //edges
+    for (var i = 0; i < data.kmeans.serial.clusters_assignment.length; i++) {
+        var trueCount = i + data.kmeans.serial.k + 1;
+        var edge = { "source": (parseInt(data.kmeans.serial.clusters_assignment[i]) + 1), "target": parseInt(trueCount), "caption": "A link!" };
+        dsrc.edges.push(edge);
+    }
+    /* console.log(dsrc)*/
+    return dsrc;
+}
+
+function getClusterColours(data, clusters) {
+    var cols = [];
+    var Colours = {};
+    Colours.names = {
+        one: "#1B9E77",
+        two: "#D95F02",
+        three: "#7570B3",
+        four: "#E7298A",
+        five: "#66A61E",
+        six: "#E6AB02",
+        aqua: "#00ffff",
+        azure: "#f0ffff",
+        beige: "#f5f5dc",
+        black: "#000000",
+        blue: "#0000ff",
+        brown: "#a52a2a",
+        cyan: "#00ffff",
+        darkblue: "#00008b",
+        darkcyan: "#008b8b",
+        darkgrey: "#a9a9a9",
+        darkgreen: "#006400",
+        darkkhaki: "#bdb76b",
+        darkmagenta: "#8b008b",
+        darkolivegreen: "#556b2f",
+        darkorange: "#ff8c00",
+        darkorchid: "#9932cc",
+        darkred: "#8b0000",
+        darksalmon: "#e9967a",
+        darkviolet: "#9400d3",
+        fuchsia: "#ff00ff",
+        gold: "#ffd700",
+        green: "#008000",
+        indigo: "#4b0082",
+        khaki: "#f0e68c",
+        lightblue: "#add8e6",
+        lightcyan: "#e0ffff",
+        lightgreen: "#90ee90",
+        lightgrey: "#d3d3d3",
+        lightpink: "#ffb6c1",
+        lightyellow: "#ffffe0",
+        lime: "#00ff00",
+        magenta: "#ff00ff",
+        maroon: "#800000",
+        navy: "#000080",
+        olive: "#808000",
+        orange: "#ffa500",
+        pink: "#ffc0cb",
+        purple: "#800080",
+        violet: "#800080",
+        red: "#ff0000",
+        silver: "#c0c0c0",
+        white: "#ffffff",
+        yellow: "#ffff00"
+    };
+    Colours.random = function() {
+        var result;
+        var count = 0;
+        for (var prop in this.names)
+            if (Math.random() < 1 / ++count)
+                result = prop;
+        return { name: result, rgb: this.names[result] };
+    };
+
+    for (var i = 0; i < clusters.nodes.length; i++) {
+        cols.push(Colours.random().rgb);
+    }
+
+    return cols;
 }
