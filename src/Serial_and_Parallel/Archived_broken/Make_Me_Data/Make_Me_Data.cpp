@@ -28,19 +28,11 @@ int main(int argc, char* argv[]){
 	int numPoints = getNumPoints(argc, argv);
 	int dimension = getDimension(argc, argv);
 	
-	if(dimension == 0){
-		cout << "Using default dimension (" << DEFAULT_DIMENSION << ")" << endl;
-		dimension = DEFAULT_DIMENSION;
-	}
+	if(dimension == 0) dimension = DEFAULT_DIMENSION;
 	
-	if(numPoints == 0){
-		cout << "Using default number of points (" << DEFAULT_NUMPOINTS << ")" << endl;
-		numPoints = DEFAULT_NUMPOINTS;
-	}
+	if(numPoints == 0) numPoints = DEFAULT_NUMPOINTS;
 
 	doRandom(dimension, numPoints, DEFAULT_MIN, DEFAULT_MAX);
-		
-		
 }
 
 void doRandom(int dim, int num, int min, int max){

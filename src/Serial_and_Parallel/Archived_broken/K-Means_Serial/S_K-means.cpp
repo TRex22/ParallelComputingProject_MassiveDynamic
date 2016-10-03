@@ -1,6 +1,5 @@
 /*
-	This code is a parallel version of k-means. Input is assumed to be normalized.
-	The parallelization occurs from the datapoints perspective. i.e. Whenever the datapoints are looped over it is done in parallel. There is potential for nested parallelism and parallelizing parts from the cluster perspective however the overhead is assumed to be too much for the time being until further testing is done.
+	This code is a serial version of k-means. Input is assumed to be normalized.
 */
 
 #include <iostream>
@@ -76,13 +75,14 @@ int main(int argc, char* argv[]){
 	int numClusters = getNumClusters(argc, argv);
 
 	//Generate random cluster centres
-	cluster* clusters = generateClusterCentres(numClusters, dimension);
+	cluster* clusters;
 
-	//Variable to keep while loop running while clustering is improving
-	int smallChangeCount = 0;
-	double lastSSE = 999;
+	int smallChangeCount = 0;	//Monitors improvement of error
+	double lastSSE = 999;		//Initialized to high number to ensure loop is entered, this is valid because only normalized data is currently used.
 
-	startTimer();
+	startTimer();	//Start time
+
+	clusters = generateClusterCentres(numClusters, dimension);
 	while(smallChangeCount < 5){
 		kmeans(clusters, data, numClusters, dimension, numLines);
 		moveClusters(clusters, numClusters, dimension);
@@ -90,9 +90,9 @@ int main(int argc, char* argv[]){
 			smallChangeCount++;
 		}
 		lastSSE = calcSSE(clusters, numClusters);
-		//cout << lastSSE << endl;
 	}
-	cout << getRuntime() << endl;
+
+	cout << getRuntime() << endl;	//End time
 }
 
 //Start timer using global variable "start"
@@ -136,7 +136,6 @@ void kmeans(cluster* clusters, double** data, int numClusters, int dimension, in
 		}
 	}
 
-	#pragma omp parallel for shared(clusters, data)
 	for(int i = 0; i < numPoints; i++){
 		double* distances = euclidPerCluster(clusters, data[i], numClusters, dimension);
 		int assignedCluster = getMinIndex(distances, numClusters);
@@ -189,12 +188,8 @@ double calcEuclidDist(double* a, double* b, int dimension){
 cluster* generateClusterCentres(int numClusters, int dimension){
 	//Initialize array of clusters
 	cluster* clusters = initClusters(numClusters, dimension);
-
-	#pragma omp parallel for
+	
 	for(int i = 0; i < numClusters; i++){
-		clusters[i].centre = (double*) malloc(sizeof(double)*dimension);
-		clusters[i].sumPoints = (double*) malloc(sizeof(double)*dimension);
-
 		for(int j = 0; j < dimension; j++){
 			clusters[i].centre[j] = (rand()/(double) RAND_MAX);
 			clusters[i].sumPoints[j] = 0;
@@ -281,7 +276,7 @@ cluster* initClusters(int numClusters, int dimension){
 	
 	for(int i = 0; i < numClusters; i++){
 		clusters[i].sumPoints = (double*) malloc(sizeof(double)*dimension);
-
+		clusters[i].centre = (double*) malloc(sizeof(double)*dimension);
 		for(int j = 0; j < dimension; j++){
 			clusters[i].sumPoints[j] = 0;
 		}

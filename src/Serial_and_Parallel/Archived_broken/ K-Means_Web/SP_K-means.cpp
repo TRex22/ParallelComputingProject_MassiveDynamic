@@ -7,8 +7,20 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <string>
 #include <fstream>
 #include "omp.h"
+#include <sstream>
+
+namespace patch
+{
+    template < typename T > std::string to_string( const T& n )
+    {
+        std::ostringstream stm ;
+        stm << n ;
+        return stm.str() ;
+    }
+}
 
 using namespace std;
 
@@ -49,14 +61,19 @@ cluster* generateClusterCentres(int numClusters, int dimension);
 double calcEuclidDist(double* a, double* b, int dimension);
 double* euclidPerCluster(cluster* clusters, double* datapoint, int numClusters, int dimension);
 int getMinIndex(double* array, int arrayLength);
-void kmeans(cluster* clusters, double** data, int numClusters, int dimension, int numPoints);
+void kmeans(cluster* clusters, double** data, int numClusters, int dimension, int numPoints, char mode);
 void moveClusters(cluster* clusters, int numClusters, int dimension);
 double calcSSE(cluster* clusters, int numClusters);
 
 //For timing
 double start;
+double runTime;
 void startTimer();
 double getRuntime();
+
+//For web
+string formatResultsForWeb(double** data, cluster* clustersStart, cluster* clustersFinal, double time, int dimension, int numClusters, int numPoints);
+	cluster* copyClusters(cluster* clusters, int numClusters, int dimension);
 
 int main(int argc, char* argv[]){
 	//Get file name
@@ -68,31 +85,144 @@ int main(int argc, char* argv[]){
 
 	//Initialize 2D array to store data
 	double** data = initMatrix(numLines);
-
+	
 	//Read datapoints from text file
 	extractDatapoints(data, fileName, ' ', dimension);
 
 	//Get number of clusters to use
 	int numClusters = getNumClusters(argc, argv);
 
+	//json string to be sent to web app
+	string output = "{\n\"kmeans\": {\n\"serial\": {\n";
+
 	//Generate random cluster centres
-	cluster* clusters = generateClusterCentres(numClusters, dimension);
+	cluster* clusters;
+	cluster* clustersStart;
 
 	//Variable to keep while loop running while clustering is improving
-	int smallChangeCount = 0;
-	double lastSSE = 999;
-
+	int smallChangeCount;
+	double lastSSE;
+	clusters = generateClusterCentres(numClusters, dimension);
+	clustersStart = copyClusters(clusters, numClusters, dimension);
+	//Serial
 	startTimer();
+
+	
+
+	smallChangeCount = 0;
+	lastSSE = 999;
+
 	while(smallChangeCount < 5){
-		kmeans(clusters, data, numClusters, dimension, numLines);
+		kmeans(clusters, data, numClusters, dimension, numLines, 's');
 		moveClusters(clusters, numClusters, dimension);
 		if(lastSSE - calcSSE(clusters, numClusters) < 0.001){
 			smallChangeCount++;
 		}
 		lastSSE = calcSSE(clusters, numClusters);
-		//cout << lastSSE << endl;
 	}
-	cout << getRuntime() << endl;
+	runTime = getRuntime();
+
+	output+=formatResultsForWeb(data, clustersStart, clusters, runTime, dimension, numClusters, numLines);
+	
+	output+=",\n\"parallel\": {\n";
+	cout << "Serial: " << runTime << endl;
+	clusters = clustersStart;
+	clustersStart = copyClusters(clusters, numClusters, dimension);
+	//Parallel
+	startTimer();
+
+	
+	
+	smallChangeCount = 0;
+	lastSSE = 999;
+
+	while(smallChangeCount < 5){
+		kmeans(clusters, data, numClusters, dimension, numLines, 'p');
+		moveClusters(clusters, numClusters, dimension);
+		if(lastSSE - calcSSE(clusters, numClusters) < 0.001){
+			smallChangeCount++;
+		}
+		lastSSE = calcSSE(clusters, numClusters);
+	}
+	runTime = getRuntime();
+
+	output+=formatResultsForWeb(data, clustersStart, clusters, runTime, dimension, numClusters, numLines);
+	
+	output+="}\n}\n";
+
+	cout << "Parallel: " << runTime << endl;
+}
+
+
+//Copy clusters and return pointer to new array of clusters
+cluster* copyClusters(cluster* clusters, int numClusters, int dimension){
+	cluster* clustersCopy = initClusters(numClusters, dimension);
+	
+	for(int i = 0; i < numClusters; i++){
+		for(int j = 0; j < dimension; j++){
+			clustersCopy[i].centre[j] = clusters[i].centre[j];
+			clustersCopy[i].sumPoints[j] = clusters[i].sumPoints[j];
+		}
+	}
+
+	return clustersCopy;
+}
+
+//Returns data in json string format for web use (NB: per result set)
+string formatResultsForWeb(double** data, cluster* clustersStart, cluster* clustersFinal, double time, int dimension, int numClusters, int numPoints){
+	//For datapoints
+	string result = "\"data\": [\n";
+	
+	for(int i = 0; i < numPoints; i++){
+		result+="[";
+		for(int j = 0; j < dimension; j++){
+			result+="\"";
+			result+= patch::to_string(data[i][j]);
+			result+="\"";
+			if(j != dimension-1) result+=",";
+		}
+		if(i == numPoints-1) result+="]\n";
+		else result+="],\n";
+	}
+	result+="],\n";
+	
+	//For number of clusters
+	result+="\"k\": \"" + patch::to_string(numClusters) + "\",\n";
+	
+	//For initial cluster centres
+	result+="\"centres_start\": [\n";
+	for(int i = 0; i < numClusters; i++){
+		result+="[";
+		for(int j = 0; j < dimension; j++){
+			result+="\"";
+			result+= patch::to_string(clustersStart[i].centre[j]);
+			result+="\"";
+			if(j != dimension-1) result+=",";
+		}
+		if(i == numClusters-1) result+="]\n";
+		else result+="],\n";
+	}
+	result+="],\n";
+	
+	//For final cluster centres
+	result+="\"centres\": [\n";
+	for(int i = 0; i < numClusters; i++){
+		result+="[";
+		for(int j = 0; j < dimension; j++){
+			result+="\"";
+			result+= patch::to_string(clustersFinal[i].centre[j]);
+			result+="\"";
+			if(j != dimension-1) result+=",";
+		}
+		if(i == numClusters-1) result+="]\n";
+		else result+="],\n";
+	}
+	result+="],\n";
+
+	//For time taken
+	result+="\"time\": " + patch::to_string(time) + "\n}\n";
+	
+	return result;
 }
 
 //Start timer using global variable "start"
@@ -126,7 +256,8 @@ void moveClusters(cluster* clusters, int numClusters, int dimension){
 }
 
 //Iterate through datapoints and assign them to clusters, calculating average along the way aka k-means
-void kmeans(cluster* clusters, double** data, int numClusters, int dimension, int numPoints){
+void kmeans(cluster* clusters, double** data, int numClusters, int dimension, int numPoints, char mode){
+	
 	//Reset counters for each cluster, may be beneficial to parallelize
 	for(int i = 0; i < numClusters; i++){
 		clusters[i].numPoints = 0;
@@ -136,6 +267,9 @@ void kmeans(cluster* clusters, double** data, int numClusters, int dimension, in
 		}
 	}
 
+	if(toupper(mode) == 'P'){
+		#pragma omp parallel for
+	}
 	for(int i = 0; i < numPoints; i++){
 		double* distances = euclidPerCluster(clusters, data[i], numClusters, dimension);
 		int assignedCluster = getMinIndex(distances, numClusters);
@@ -184,14 +318,16 @@ double calcEuclidDist(double* a, double* b, int dimension){
 	return sqrt(result);
 }
 
-//Initialize array of clusters and generate cluster centres in range [0,1] in parallel
+//Initialize array of clusters and generate cluster centres in range [0,1]. Currently not parallel.
 cluster* generateClusterCentres(int numClusters, int dimension){
 	//Initialize array of clusters
 	cluster* clusters = initClusters(numClusters, dimension);
 
+	srand(time(NULL));
+
 	for(int i = 0; i < numClusters; i++){
-		clusters[i].centre = (double*) malloc(sizeof(double)*dimension);
-		clusters[i].sumPoints = (double*) malloc(sizeof(double)*dimension);
+		
+
 
 		for(int j = 0; j < dimension; j++){
 			clusters[i].centre[j] = (rand()/(double) RAND_MAX);
@@ -270,7 +406,7 @@ char* getFileName(int argc, char* argv[]){
 //Get number of clusters to use from command line parameters 15 is default
 int getNumClusters(int argc, char* argv[]){
 	if(argc > 2) return strtol(argv[2],NULL, 10);
-	else return 15;
+	else return 8;
 }
 
 //Initialize array of clusters as well as the sumPoints field
@@ -279,6 +415,7 @@ cluster* initClusters(int numClusters, int dimension){
 	
 	for(int i = 0; i < numClusters; i++){
 		clusters[i].sumPoints = (double*) malloc(sizeof(double)*dimension);
+		clusters[i].centre = (double*) malloc(sizeof(double)*dimension);
 
 		for(int j = 0; j < dimension; j++){
 			clusters[i].sumPoints[j] = 0;

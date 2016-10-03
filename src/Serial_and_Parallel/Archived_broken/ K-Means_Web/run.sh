@@ -4,8 +4,8 @@
 	do
 		for j in {1..100}
 		do
-			../Make_Me_Data/Make_Me_Data $(($i*100)) 3 > ../K-Means_Serial/Test.txt;
-			varsum=$(echo $varsum + "$(./S_K-means Test.txt)" | bc -l);
+			../Make_Me_Data/Make_Me_Data $(($i*100)) 3 > ../K-Means_Parallel/Test.txt;
+			varsum=$(echo $varsum + "$(./SP_K-means Test.txt)" | bc -l);
 		done
 		echo $(($i*100)),$(echo $varsum/100.0 | bc -l)
 	done
