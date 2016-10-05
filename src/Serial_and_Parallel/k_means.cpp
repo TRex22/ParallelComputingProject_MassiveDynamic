@@ -16,13 +16,13 @@
  
 using namespace std;
 
-bool k_Means(vector< vector<double> > data, const bool webmode);
-bool parallel_k_Means(vector< vector<double> > data, const bool webmode);
+bool k_Means(vector< vector<double> > data, int numClusters);
+bool parallel_k_Means(vector< vector<double> > data, int numClusters);
 
-bool k_Means(vector< vector<double> > data, const bool webmode){
+bool k_Means(vector< vector<double> > data, int numClusters){
 	int k;
 	
-	k = 10;//rand()%10 + 1;
+	k = numClusters;
 	vector<vector<double>> centres(k, vector<double>(data[0].size(), 0));
 
 	for (int i = 0; i < centres.size(); i++)     //Randomises the cluster centres
@@ -34,7 +34,6 @@ bool k_Means(vector< vector<double> > data, const bool webmode){
 	}
 
 	vector<int> clusters_assignment(data.size());
-
 
 	int it = 0;
 	while(it < 200)
@@ -83,22 +82,22 @@ bool k_Means(vector< vector<double> > data, const bool webmode){
 		}
 		it++;
 	}
-	
+
 	return true;
 }
 
 
 
 
-bool parallel_k_Means(vector<vector<double>> data, const bool webmode){
-	ofstream file;
+bool parallel_k_Means(vector<vector<double>> data, int numClusters){
 	int k;
 	
-	k = 10;//rand()%10 + 1;
+	k = numClusters;
 	vector<vector<double>> centres(k, vector<double>(data[0].size(), 0));
 
 	int i;
 	int j;
+
 	#pragma omp parallel for collapse(2) private(j) num_threads(k)
 	for (i = 0; i < centres.size(); i++)     //Randomises the cluster centres
 	{
@@ -114,7 +113,7 @@ bool parallel_k_Means(vector<vector<double>> data, const bool webmode){
 	while(it < 200)
 	{
 		int min_centre_index;
-		//#pragma omp parallel for schedule(dynamic, 5) private(j, min_centre_index) num_threads(4) //collapse(2)
+
 		#pragma omp parallel
 		for (int i = 0; i < data.size(); ++i)   //Finds nearest cluster centre and assigns a value in a vector corresponding to the closest centre
 		{   
@@ -132,8 +131,6 @@ bool parallel_k_Means(vector<vector<double>> data, const bool webmode){
 
 			clusters_assignment[i] = min_centre_index;
 		}
-
-		/*Print_Data("clusters assignment", clusters_assignment);*/
 
 		#pragma omp parallel for
 		for (int j = 0; j < k; j++) //Loops over clusters
@@ -162,8 +159,6 @@ bool parallel_k_Means(vector<vector<double>> data, const bool webmode){
 		}
 		it++;
 	}
-
-	double Mean_Sq_Err = Mean_Squared_Error(data, centres);
 
 	return true;
 }
