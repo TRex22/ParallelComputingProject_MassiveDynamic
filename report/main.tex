@@ -9,6 +9,7 @@
 \usepackage{graphicx}
 \usepackage{algorithm2e}
 \usepackage{subcaption}
+\usepackage{amssymb}
 
 \setlength{\parindent}{0em}
 \setlength{\parskip}{1em}
@@ -20,6 +21,7 @@
 K-means is  one of the simplest unsupervised learning algorithms to solve a clustering problem. Clustering is the process of partitioning a group of data points into a small number of clusters. In general, a cluster is defined as a set of similar objects. The similarity in a given set may vary according to data, therefore a clustering algorithm that finds an optimization in one set of data may not find an optimization in another set of data.
 
 There are many variations of the k-means clustering algorithm, however we have looked at 2 of them, namely the normal k-means clustering and online k-means clustering.
+
 
 \section{Terminology and definitions}
 For this report we will define some terms and variables which will be used:
@@ -43,15 +45,25 @@ As stated, k-means is a solution technique to solve a clustering problem. Cluste
 In centroid clustering, clusters are represented by a vector, which may not necessarily be a member of the dataset. When the number of clusters is fixed to $k$, k-means clustering becomes an optimization problem,i.e. find the $k$ cluster centers and assign the points to the nearest cluster center, such that the squared distances from the cluster are minimized, i.e. the sum squared error is minimized. This problem is known to be NP-Hard.
 
 
+\section{k-means vs Online k-means}
+K-means and online k-means are very similar in that they accomplish the same task. However, there are some big differences. K-means loops through through all the data given and updates the centres after every point has been assigned to their respective closest centre. Each data point can be looked at individually as calculations for the closest centre for each point are not dependent on other points. Each centre is also independent of each other after the points have been assigned to them. This implies that k-means can benefit highly from parallelization. Chunks of data points as well as cluster centres can be processed concurrently.
+
+On the other hand, online k-means is used to deal with continuous streams of data, unlike k-means where all the data is known beforehand. Online k-means looks at one data point at a time and finds the closest centre. Once the centre is found, it is then updated immediately. The problem with this is that calculations are now dependent on prior calculations. As seen above in the online k-means algorithm, the learning rate, $\eta$, is decreased after each iteration, meaning that the calculations for the centres will change depending on the order the data is given. and therefore online k-means is not suitable at all for parallelization.
+
+
+\section{Theoretical Analysis}
+The computational complexity of finding the optimal solution to the k-means clustering problem is known to be NP-hard for a general number of clusters $k$ (even for 2 clusters) ans as such a heuristic algorithm must be used such as Lloyd's k-means algorithm shown above. The running time of Lloyd's algorithm is often given as $O(nkmi)$, where $n$ is the number of vectors in $\mathbb{R}^m$ space, $k$ the number of clusters and $i$ the number of iterations needed until convergence.
+
+
 \newpage
 
 
-\section{Algorithms}
-Shown below is the pseudo-code for the k-means clustering algorithm and the Online k-means clustering algorithm:
+\section{Serial Algorithms}
+Shown below is the general pseudo-code for the serial k-means clustering algorithm and the serial Online k-means clustering algorithm:
 
 \begin{algorithm}[H]
 \SetAlgoLined
- Given dataset $S$ in $R^m$\;
+ Given dataset $S$ in $\mathbb{R}^m$\;
  Choose $k$, which is number of clusters\;
  Choose the $k$ cluster centres(Randomly): $\underline{\mu_1}, \underline{\mu_2}, \dots, \underline{\mu_k}$\;
  \While{stopping condition does not hold}{
@@ -67,12 +79,12 @@ Shown below is the pseudo-code for the k-means clustering algorithm and the Onli
     where $N_j$ is the number of points in cluster $j$.
   }
  }
- \caption{k-means clustering algorithm}
+ \caption{k-means clustering algorithm (This heuristic algorithm is also known as Lloyd's k-means algorithm}
 \end{algorithm}
 
 \begin{algorithm}[H]
 \SetAlgoLined
- Given dataset $S$ in $R^m$\;
+ Given dataset $S$ in $\mathbb{R}^m$\;
  Choose $k$, which is number of clusters\;
  Choose the $k$ cluster centres(Randomly): $\underline{\mu_1}, \underline{\mu_2}, \dots, \underline{\mu_k}$\;
  \While{stopping condition does not hold}{
@@ -112,7 +124,29 @@ The stopping conditions may vary by time or by iterations. However, we have chos
 
 \end{figure}
 
-\section{k-means vs Online k-means}
+
+
+\section{Parallelization of k-means}
+
+
+
+
+\section{Parallelization Problems Encountered}
+
+
+
+
+\section{Results}
+\subsection{Serial Results}
+
+
+
+\subsection{Parallel Results}
+
+
+
+
+\section{Conclusion}
 
 
 
