@@ -43,7 +43,7 @@ vector<string> k_Means(vector< vector<double> > data, const bool webmode){
 	output = Get_Data(output, "centres_start", centres);
 
 	int it = 0;
-	while(it < 200)
+	while(it < 500)
 	{
 
 		for (int i = 0; i < data.size(); ++i)   //Finds nearest cluster centre and assigns a value in a vector corresponding to the closest centre
