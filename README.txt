@@ -14,7 +14,7 @@ All code is located in src folder
 
 GUI Interface
 =============
-run bash script `./start-rnd-3d.sh`
+run bash script './start-rnd-3d.sh'
 load web-browser and go to url: http://localhost:8080/
 
 Testing and other code base
@@ -23,10 +23,13 @@ In src/ folder go to the Serial_and_Parallel folder
 run './compile.sh'
 
 To run datapoints:
-run bash script `./runDatapoints.sh`
+run bash script './runDatapoints.sh'
 
 To run clusters:
-run bash script `./runClusters.sh`
+run bash script './runClusters.sh'
+
+To verify parallel and serial results are the same:
+run bash script './runEvaluation.sh'
 
 
 

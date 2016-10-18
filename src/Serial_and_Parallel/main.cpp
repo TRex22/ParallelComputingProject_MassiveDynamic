@@ -16,19 +16,19 @@ using namespace std;
 vector<vector<double>> extractDatapoints(char* fileName, char separator);
 vector<double> extractDatapoint(string line, char separator);
 
-void k_means(vector<vector<double>> data, char mode, int clusters);
+void k_means(vector<vector<double>> data, char mode, int clusters, bool eval);
 char getMode(int argc, char* argv[]);
 
 int main(int argc, char* argv[])
 {
-	srand(time(NULL));
 	vector<vector<double>> data;
 
 
 	char mode = getMode(argc, argv);
         data = extractDatapoints(argv[2], ' ');
 
-	k_means(Normalize_Data(data), argv[1][0], strtol(argv[3], NULL, 10));
+	if( (argc > 4) && (toupper(argv[4][0]) == 'E') )	k_means(Normalize_Data(data), argv[1][0], strtol(argv[3], NULL, 10), true);
+	else	k_means(Normalize_Data(data), argv[1][0], strtol(argv[3], NULL, 10), false);
 }
 
 //Extract datapoints from text file
@@ -67,14 +67,14 @@ char getMode(int argc, char* argv[]){
 	else return 'S';
 }
 
-void k_means(vector<vector<double>> data, char mode, int clusters)
+void k_means(vector<vector<double>> data, char mode, int clusters, bool eval)
 {
 	bool result;
 	double start = omp_get_wtime();
-		if(toupper(mode) == 'S') result = k_Means(data, clusters);
-		else result = parallel_k_Means(data, clusters);
+		if(toupper(mode) == 'S') result = k_Means(data, clusters, eval);
+		else result = parallel_k_Means(data, clusters, eval);
 	double end = omp_get_wtime();
 	
-	cout << end-start;
+	if(!eval) cout << end-start;
     
 }

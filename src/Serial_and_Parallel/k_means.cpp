@@ -16,11 +16,11 @@
  
 using namespace std;
 
-bool k_Means(vector< vector<double> > data, int numClusters);
-bool parallel_k_Means(vector< vector<double> > data, int numClusters);
+bool k_Means(vector< vector<double> > data, int numClusters, bool eval);
+bool parallel_k_Means(vector< vector<double> > data, int numClusters, bool eval);
 void printClusterCentres(vector<vector<double>> clusters);
 
-bool k_Means(vector< vector<double> > data, int numClusters){
+bool k_Means(vector< vector<double> > data, int numClusters, bool eval){
 	int k;
 	
 	k = numClusters;
@@ -33,8 +33,6 @@ bool k_Means(vector< vector<double> > data, int numClusters){
 			centres[i][j] = ((double) rand() / (RAND_MAX));
 		}
 	}
-
-	//printClusterCentres(centres);
 
 	vector<int> clusters_assignment(data.size());
 
@@ -86,7 +84,10 @@ bool k_Means(vector< vector<double> > data, int numClusters){
 		it++;
 	}
 
-	//printClusterCentres(centres);
+	if(eval){
+		cout << "Serial:" << endl;
+		printClusterCentres(centres);
+	}
 
 	return true;
 }
@@ -94,7 +95,7 @@ bool k_Means(vector< vector<double> > data, int numClusters){
 
 
 
-bool parallel_k_Means(vector<vector<double>> data, int numClusters){
+bool parallel_k_Means(vector<vector<double>> data, int numClusters, bool eval){
 	int k;
 	
 	k = numClusters;
@@ -166,8 +167,11 @@ bool parallel_k_Means(vector<vector<double>> data, int numClusters){
 		}
 		it++;
 	}
-
-	//printClusterCentres(centres);
+	
+	if(eval){
+		cout << "Parallel:" << endl;
+		printClusterCentres(centres);
+	}
 
 	return true;
 }
