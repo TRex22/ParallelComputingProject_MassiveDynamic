@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 
 \title{PC Project Report}
-\author{Liron Mizrahi, Daniel da Silva}
+\author{Liron Mizrahi, Daniel da Silva, Fran-Pierre Nel, Jason Chalom}
 \date{October 2016}
 
 \usepackage{natbib}
@@ -185,6 +185,14 @@ Now the problem with using this stopping condition is the variation in the rando
 
 \newpage
 \section{Results}
+\subsection{Testing methodology}
+Firstly, it is important to mention that the results of the serial and parallel algorithms (namely the final cluster centres) was compared and found to be the same if the same data was used. The cluster centres were indeed generated randomly however the rand() function was never seeded and serial and parallel were run separately hence the cluster centres always had the same initial values per computer.
+
+It is unnecessary to evaluate the error as it depends on the final cluster centres and datapoints only. Hence having the same final cluster centres is enough (since the datapoints never change).
+
+Also note that the loop was executed a set number of times to ensure that no variations occured during cluster centre generation. (This was prior to us realizing that rand() generates the same values if un-seeded and ran executed in different programs).
+
+\newpage
 \subsection{Runtime Results}
 \subsubsection{Serial vs Parallel Results (Iterating datapoints)}
 \begin{figure}[h!]

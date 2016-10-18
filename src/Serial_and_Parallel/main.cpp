@@ -75,6 +75,6 @@ void k_means(vector<vector<double>> data, char mode, int clusters)
 		else result = parallel_k_Means(data, clusters);
 	double end = omp_get_wtime();
 	
-	cout << end-start << endl;
+	cout << end-start;
     
 }

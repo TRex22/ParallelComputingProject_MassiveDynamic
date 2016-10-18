@@ -34,7 +34,7 @@ bool k_Means(vector< vector<double> > data, int numClusters){
 		}
 	}
 
-	printClusterCentres(centres);
+	//printClusterCentres(centres);
 
 	vector<int> clusters_assignment(data.size());
 
@@ -112,8 +112,6 @@ bool parallel_k_Means(vector<vector<double>> data, int numClusters){
 		}
 	}
 
-	printClusterCentres(centres);
-
 	vector<int> clusters_assignment(data.size());
 
 	int it = 0;
@@ -169,7 +167,7 @@ bool parallel_k_Means(vector<vector<double>> data, int numClusters){
 		it++;
 	}
 
-	//
+	//printClusterCentres(centres);
 
 	return true;
 }
