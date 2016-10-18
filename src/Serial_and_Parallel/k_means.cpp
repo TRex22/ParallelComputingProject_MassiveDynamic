@@ -18,6 +18,7 @@ using namespace std;
 
 bool k_Means(vector< vector<double> > data, int numClusters);
 bool parallel_k_Means(vector< vector<double> > data, int numClusters);
+void printClusterCentres(vector<vector<double>> clusters);
 
 bool k_Means(vector< vector<double> > data, int numClusters){
 	int k;
@@ -82,6 +83,8 @@ bool k_Means(vector< vector<double> > data, int numClusters){
 		}
 		it++;
 	}
+
+	printClusterCentres(centres);
 
 	return true;
 }
@@ -160,7 +163,18 @@ bool parallel_k_Means(vector<vector<double>> data, int numClusters){
 		it++;
 	}
 
+	printClusterCentres(centres);
+
 	return true;
+}
+
+void printClusterCentres(vector<vector<double>> clusters){
+	for(int i = 0; i < clusters.size(); i++){
+		for(int j = 0; j < clusters[0].size(0); j++){
+			cout << clusters[i][j] << " ";
+		}
+		cout << endl;
+	}
 }
 
 #endif

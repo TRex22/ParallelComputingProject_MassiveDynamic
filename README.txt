@@ -20,7 +20,7 @@ load web-browser and go to url: http://localhost:8080/
 Testing and other code base
 ===========================
 In src/ folder go to the Serial_and_Parallel folder
-run `make`
+run './compile.sh'
 
 To run datapoints:
 run bash script `./runDatapoints.sh`
