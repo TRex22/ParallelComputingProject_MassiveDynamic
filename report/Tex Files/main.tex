@@ -44,7 +44,7 @@ For this report we will define some terms and variables which will be used:
 \section{Background Theory}
 As stated, k-means is a solution technique to solve a clustering problem. Clustering is the task of grouping a set of objects in such a way that objects in the same group have more similarities to each other than to those in other groups. Clustering is not just one specific algorithm, but it is a problem to be solved. The idea of a cluster cannot be precisely defined, as such different variations of the solution can be derived depending on the idea used of what constitutes a cluster and the method used to find them. This is one of the reasons why there are so many different clustering algorithms. Different cluster models are used by different people depending on their needs, and for each of these cluster models again different algorithms can be given. The cluster model used by k-means is called a centroid model, where each cluster is represented by a single mean vector.
 
-\section{The Clustering Problem}
+\section{The Clustering Problem \citep{wikiclusteranalysis}}
 In centroid clustering, clusters are represented by a vector, which may not necessarily be a member of the dataset. When the number of clusters is fixed to $k$, k-means clustering becomes an optimization problem,i.e. find the $k$ cluster centers and assign the points to the nearest cluster center, such that the squared distances from the cluster are minimized, i.e. the sum squared error (SSE) is minimized. This problem is known to be NP-Hard.
 
 
@@ -134,7 +134,8 @@ The stopping conditions may vary by time or by iterations. However, we have chos
         \includegraphics[width=0.9\linewidth, height=5cm]{Pictures/K_Means_Example_Step_4.png}
         \caption{Steps (b) and (c) are repeated until convergence has been reached.}
     \end{subfigure}
-\caption{Example demonstrating how k-means works}
+\caption{Example demonstrating how k-means works} \citep{wikikmeans}
+
 
 \end{figure}
 
@@ -264,6 +265,9 @@ In conclusion, the project was successful as we obtained respectable speedup for
 However, it is also important to note that while cluster speedup is higher than datapoint speedup, the datapoint speedup is very important as it is the aspect that is most likely to be increased in size.
 
 
+\newpage
 
 
+\bibliographystyle{plain}
+\bibliography{references}
 \end{document}
