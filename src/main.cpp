@@ -20,7 +20,7 @@ void Compare_Normal_k_means(vector<vector<double>> data, const bool webmode);
 
 int main(int argc, char* argv[])
 {
-	srand(time(NULL));
+	//srand(time(NULL));
     vector<vector<double>> data;
 
 	bool webmode = false;
